@@ -1,0 +1,486 @@
+config 3DFX
+	bool "3DFX"
+	default n
+config AA
+	bool "AA"
+	default n
+config ALSA1X
+	bool "ALSA1X"
+	default y
+config APPLE_IR
+	bool "APPLE_IR"
+	default n
+config APPLE_REMOTE
+	bool "APPLE_REMOTE"
+	default n
+config ARTS
+	bool "ARTS"
+	default n
+config AUDIO_INPUT
+	bool "AUDIO_INPUT"
+	default y
+config BITMAP_FONT
+	bool "BITMAP_FONT"
+	default y
+config BL
+	bool "BL"
+	default n
+config CACA
+	bool "CACA"
+	default n
+config CDDA
+	bool "CDDA"
+	default n
+config CDDB
+	bool "CDDB"
+	default n
+config COREAUDIO
+	bool "COREAUDIO"
+	default n
+config COREVIDEO
+	bool "COREVIDEO"
+	default n
+config DART
+	bool "DART"
+	default n
+config DGA
+	bool "DGA"
+	default n
+config DIRECT3D
+	bool "DIRECT3D"
+	default n
+config DIRECTFB
+	bool "DIRECTFB"
+	default n
+config DIRECTX
+	bool "DIRECTX"
+	default n
+config DVBIN
+	bool "DVBIN"
+	default n
+config DVDNAV
+	bool "DVDNAV"
+	default n
+config DVDNAV_INTERNAL
+	bool "DVDNAV_INTERNAL"
+	default n
+config DVDREAD
+	bool "DVDREAD"
+	default n
+config DVDREAD_INTERNAL
+	bool "DVDREAD_INTERNAL"
+	default n
+config DXR2
+	bool "DXR2"
+	default n
+config DXR3
+	bool "DXR3"
+	default n
+config ESD
+	bool "ESD"
+	default n
+config FAAC
+	bool "FAAC"
+	default n
+config FAAD
+	bool "FAAD"
+	default n
+config FAAD_INTERNAL
+	bool "FAAD_INTERNAL"
+	default n
+config FASTMEMCPY
+	bool "FASTMEMCPY"
+	default y
+config FBDEV
+	bool "FBDEV"
+	default y
+config FREETYPE
+	bool "FREETYPE"
+	default n
+config FTP
+	bool "FTP"
+	default y
+config GIF
+	bool "GIF"
+	default n
+config GGI
+	bool "GGI"
+	default n
+config GL
+	bool "GL"
+	default n
+config GUI
+	bool "GUI"
+	default n
+config HAVE_POSIX_SELECT
+	bool "HAVE_POSIX_SELECT"
+	default y
+config HAVE_SYS_MMAN_H
+	bool "HAVE_SYS_MMAN_H"
+	default y
+config IVTV
+	bool "IVTV"
+	default n
+config JACK
+	bool "JACK"
+	default n
+config JOYSTICK
+	bool "JOYSTICK"
+	default n
+config JPEG
+	bool "JPEG"
+	default n
+config KVA
+	bool "KVA"
+	default n
+config LADSPA
+	bool "LADSPA"
+	default n
+config LIBA52
+	bool "LIBA52"
+	default n
+config LIBA52_INTERNAL
+	bool "LIBA52_INTERNAL"
+	default y
+config LIBASS
+	bool "LIBASS"
+	default n
+config LIBBS2B
+	bool "LIBBS2B"
+	default n
+config LIBDCA
+	bool "LIBDCA"
+	default n
+config LIBDV
+	bool "LIBDV"
+	default n
+config LIBDVDCSS_INTERNAL
+	bool "LIBDVDCSS_INTERNAL"
+	default n
+config LIBLZO
+	bool "LIBLZO"
+	default n
+config LIBMAD
+	bool "LIBMAD"
+	default n
+config LIBMENU
+	bool "LIBMENU"
+	default n
+config LIBMENU_DVBIN
+	bool "LIBMENU_DVBIN"
+	default n
+config LIBMPEG2
+	bool "LIBMPEG2"
+	default n
+config LIBNEMESI
+	bool "LIBNEMESI"
+	default n
+config LIBNUT
+	bool "LIBNUT"
+	default n
+config LIBSMBCLIENT
+	bool "LIBSMBCLIENT"
+	default n
+config LIBTHEORA
+	bool "LIBTHEORA"
+	default n
+config LIRC
+	bool "LIRC"
+	default n
+config LIVE555
+	bool "LIVE555"
+	default n
+config MPLAYER_MD5SUM
+	bool "MPLAYER_MD5SUM"
+	default y
+config MGA
+	bool "MGA"
+	default n
+config MNG
+	bool "MNG"
+	default n
+config MP3LAME
+	bool "MP3LAME"
+	default y
+config MP3LIB
+	bool "MP3LIB"
+	default y
+config MUSEPACK
+	bool "MUSEPACK"
+	default n
+config NAS
+	bool "NAS"
+	default n
+config NATIVE_RTSP
+	bool "NATIVE_RTSP"
+	default y
+config NEED_SHMEM
+	bool "NEED_SHMEM"
+	default y
+config NETWORK
+	bool "NETWORK"
+	default y
+config OPENAL
+	bool "OPENAL"
+	default n
+config OSS
+	bool "OSS"
+	default y
+config PNG
+	bool "PNG"
+	default n
+config PNM
+	bool "PNM"
+	default n
+config PRIORITY
+	bool "PRIORITY"
+	default n
+config PULSE
+	bool "PULSE"
+	default n
+config PVR
+	bool "PVR"
+	default y
+config QTX_CODECS
+	bool "QTX_CODECS"
+	default n
+config QTX_EMULATION
+	bool "QTX_EMULATION"
+	default n
+config RADIO
+	bool "RADIO"
+	default n
+config RADIO_CAPTURE
+	bool "RADIO_CAPTURE"
+	default n
+config REAL_CODECS
+	bool "REAL_CODECS"
+	default n
+config S3FB
+	bool "S3FB"
+	default n
+config SDL
+	bool "SDL"
+	default n
+config SPEEX
+	bool "SPEEX"
+	default n
+config STREAM_CACHE
+	bool "STREAM_CACHE"
+	default y
+config SGIAUDIO
+	bool "SGIAUDIO"
+	default n
+config SUNAUDIO
+	bool "SUNAUDIO"
+	default n
+config SVGA
+	bool "SVGA"
+	default n
+config TDFXFB
+	bool "TDFXFB"
+	default n
+config TDFXVID
+	bool "TDFXVID"
+	default n
+config TGA
+	bool "TGA"
+	default y
+config TOOLAME
+	bool "TOOLAME"
+	default n
+config TREMOR_INTERNAL
+	bool "TREMOR_INTERNAL"
+	default n
+config TV
+	bool "TV"
+	default y
+config TV_BSDBT848
+	bool "TV_BSDBT848"
+	default n
+config TV_DSHOW
+	bool "TV_DSHOW"
+	default n
+config TV_TELETEXT
+	bool "TV_TELETEXT"
+	default n
+config TV_V4L 
+	bool "TV_V4L"
+	default y
+config TV_V4L1
+	bool "TV_V4L1"
+	default y
+config TV_V4L2
+	bool "TV_V4L2"
+	default y
+config TWOLAME
+	bool "TWOLAME"
+	default y
+config UNRAR_EXEC
+	bool "UNRAR_EXEC"
+	default y
+config V4L2
+	bool "V4L2"
+	default y
+config VCD
+	bool "VCD"
+	default n
+config VDPAU
+	bool "VDPAU"
+	default n
+config VESA
+	bool "VESA"
+	default n
+config VIDIX
+	bool "VIDIX"
+	default n
+config VIDIX_PCIDB
+	bool "VIDIX_PCIDB"
+	default 0
+config VIDIX_CYBERBLADE
+	bool "VIDIX_CYBERBLADE"
+	default n
+config VIDIX_IVTV
+	bool "VIDIX_IVTV"
+	default n
+config VIDIX_MACH64
+	bool "VIDIX_MACH64"
+	default n
+config VIDIX_MGA
+	bool "VIDIX_MGA"
+	default n
+config VIDIX_MGA_CRTC2
+	bool "VIDIX_MGA_CRTC2"
+	default n
+config VIDIX_NVIDIA
+	bool "VIDIX_NVIDIA"
+	default n
+config VIDIX_PM2
+	bool "VIDIX_PM2"
+	default n
+config VIDIX_PM3
+	bool "VIDIX_PM3"
+	default n
+config VIDIX_RADEON
+	bool "VIDIX_RADEON"
+	default n
+config VIDIX_RAGE128
+	bool "VIDIX_RAGE128"
+	default n
+config VIDIX_S3
+	bool "VIDIX_S3"
+	default n
+config VIDIX_SH_VEU
+	bool "VIDIX_SH_VEU"
+	default n
+config VIDIX_SIS
+	bool "VIDIX_SIS"
+	default n
+config VIDIX_UNICHROME
+	bool "VIDIX_UNICHROME"
+	default n
+config VORBIS
+	bool "VORBIS"
+	default n
+config VSTREAM
+	bool "VSTREAM"
+	default n
+config WII
+	bool "WII"
+	default n
+config WIN32DLL
+	bool "WIN32DLL"
+	default n
+config WIN32WAVEOUT
+	bool "WIN32WAVEOUT"
+	default n
+config WIN32_EMULATION
+	bool "WIN32_EMULATION"
+	default n
+config X11
+	bool "X11"
+	default n
+config X264
+	bool "X264"
+	default n
+config XANIM_CODECS
+	bool "XANIM_CODECS"
+	default n
+config XMGA
+	bool "XMGA"
+	default n
+config XMMS_PLUGINS
+	bool "XMMS_PLUGINS"
+	default n
+config XV
+	bool "XV"
+	default n
+config XVID4
+	bool "XVID4"
+	default n
+config XVIDIX
+	bool "XVIDIX"
+	default n
+config XVMC
+	bool "XVMC"
+	default n
+config XVR100
+	bool "XVR100"
+	default n
+config YUV4MPEG
+	bool "YUV4MPEG"
+	default n
+config ZR
+	bool "ZR"
+	default n
+
+# Added by me
+config ARCH_X86_32
+	bool "ARCH_X86_32"
+	default y
+config OSS_AUDIO
+	bool "OSS_AUDIO"
+	default y
+config AANDCT
+	bool "AANDCT"
+	default y
+config FFT
+	bool "FFT"
+	default y
+config GOLOMB
+	bool "GOLOMB"
+	default y
+config LPC
+	bool "LPC"
+	default y
+config MDCT
+	bool "MDCT"
+	default y
+config RDFT
+	bool "RDFT"
+	default y
+
+config FILE_PROTOCOL
+	bool "FILE_PROTOCOL"
+	default n
+config GOPHER_PROTOCOL
+	bool "GOPHER_PROTOCOL"
+	default n
+config HTTP_PROTOCOL
+	bool "HTTP_PROTOCOL"
+	default n
+config PIPE_PROTOCOL
+	bool "PIPE_PROTOCOL"
+	default n
+config RTMP_PROTOCOL
+	bool "RTMP_PROTOCOL"
+	default n
+config RTP_PROTOCOL
+	bool "RTP_PROTOCOL"
+	default n
+config TCP_PROTOCOL
+	bool "TCP_PROTOCOL"
+	default n
+config UDP_PROTOCOL
+	bool "UDP_PROTOCOL"
+	default n

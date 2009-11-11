@@ -1,0 +1,33 @@
+config AAC_ADTSTOASC_BSF
+	bool "AAC_ADTSTOASC_BSF"
+	default y
+config DUMP_EXTRADATA_BSF
+	bool "DUMP_EXTRADATA_BSF"
+	default y
+config H264_MP4TOANNEXB_BSF
+	bool "H264_MP4TOANNEXB_BSF"
+	default y
+config IMX_DUMP_HEADER_BSF
+	bool "IMX_DUMP_HEADER_BSF"
+	default y
+config MJPEGA_DUMP_HEADER_BSF
+	bool "MJPEGA_DUMP_HEADER_BSF"
+	default y
+config MP3_HEADER_COMPRESS_BSF
+	bool "MP3_HEADER_COMPRESS_BSF"
+	default y
+config MP3_HEADER_DECOMPRESS_BSF
+	bool "MP3_HEADER_DECOMPRESS_BSF"
+	default y
+config MOV2TEXTSUB_BSF
+	bool "MOV2TEXTSUB_BSF"
+	default y
+config NOISE_BSF
+	bool "NOISE_BSF"
+	default y
+config REMOVE_EXTRADATA_BSF
+	bool "REMOVE_EXTRADATA_BSF"
+	default y
+config TEXT2MOVSUB_BSF
+	bool "TEXT2MOVSUB_BSF"
+	default y

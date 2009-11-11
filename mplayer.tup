@@ -1,0 +1,24 @@
+CFLAGS += -Wundef
+CFLAGS += -Wdisabled-optimization
+CFLAGS += -Wno-pointer-sign
+CFLAGS += -Wdeclaration-after-statement
+CFLAGS += -std=gnu99
+CFLAGS += -Wall
+CFLAGS += -Wno-switch
+CFLAGS += -Wpointer-arith
+CFLAGS += -Wredundant-decls
+CFLAGS += -ffast-math
+CFLAGS += -fomit-frame-pointer
+CFLAGS += -D_LARGEFILE_SOURCE
+CFLAGS += -D_FILE_OFFSET_BITS=64
+CFLAGS += -D_REENTRANT
+CFLAGS += -I$(GITTUP_ROOT)
+CFLAGS += -I$(GITTUP_ROOT)/zlib
+CFLAGS += -I$(TUP_CWD)
+CFLAGS += -ftup-linux
+
+#-I/usr/include/SDL
+#-I/usr/include/freetype2
+#-I/usr/include/dirac
+#-I/usr/include/schroedinger-1.0
+#-I/usr/include/liboil-0.3

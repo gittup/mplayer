@@ -1,0 +1,385 @@
+config AAC_DEMUXER
+	bool "AAC_DEMUXER"
+	default y
+config AC3_DEMUXER
+	bool "AC3_DEMUXER"
+	default y
+config AEA_DEMUXER
+	bool "AEA_DEMUXER"
+	default y
+config AIFF_DEMUXER
+	bool "AIFF_DEMUXER"
+	default y
+config AMR_DEMUXER
+	bool "AMR_DEMUXER"
+	default y
+config APC_DEMUXER
+	bool "APC_DEMUXER"
+	default y
+config APE_DEMUXER
+	bool "APE_DEMUXER"
+	default y
+config ASF_DEMUXER
+	bool "ASF_DEMUXER"
+	default y
+config ASS_DEMUXER
+	bool "ASS_DEMUXER"
+	default y
+config AU_DEMUXER
+	bool "AU_DEMUXER"
+	default y
+config AVI_DEMUXER
+	bool "AVI_DEMUXER"
+	default y
+config AVS_DEMUXER
+	bool "AVS_DEMUXER"
+	default y
+config BETHSOFTVID_DEMUXER
+	bool "BETHSOFTVID_DEMUXER"
+	default y
+config BFI_DEMUXER
+	bool "BFI_DEMUXER"
+	default y
+config C93_DEMUXER
+	bool "C93_DEMUXER"
+	default y
+config CAF_DEMUXER
+	bool "CAF_DEMUXER"
+	default n
+config CAVSVIDEO_DEMUXER
+	bool "CAVSVIDEO_DEMUXER"
+	default y
+config DAUD_DEMUXER
+	bool "DAUD_DEMUXER"
+	default y
+config DIRAC_DEMUXER
+	bool "DIRAC_DEMUXER"
+	default y
+config DNXHD_DEMUXER
+	bool "DNXHD_DEMUXER"
+	default n
+config DSICIN_DEMUXER
+	bool "DSICIN_DEMUXER"
+	default y
+config DTS_DEMUXER
+	bool "DTS_DEMUXER"
+	default y
+config DV_DEMUXER
+	bool "DV_DEMUXER"
+	default y
+config DXA_DEMUXER
+	bool "DXA_DEMUXER"
+	default y
+config EA_DEMUXER
+	bool "EA_DEMUXER"
+	default y
+config EA_CDATA_DEMUXER
+	bool "EA_CDATA_DEMUXER"
+	default y
+config EAC3_DEMUXER
+	bool "EAC3_DEMUXER"
+	default y
+config FFM_DEMUXER
+	bool "FFM_DEMUXER"
+	default y
+config FLAC_DEMUXER
+	bool "FLAC_DEMUXER"
+	default y
+config FLIC_DEMUXER
+	bool "FLIC_DEMUXER"
+	default y
+config FLV_DEMUXER
+	bool "FLV_DEMUXER"
+	default y
+config FOURXM_DEMUXER
+	bool "FOURXM_DEMUXER"
+	default y
+config GSM_DEMUXER
+	bool "GSM_DEMUXER"
+	default y
+config GXF_DEMUXER
+	bool "GXF_DEMUXER"
+	default y
+config H261_DEMUXER
+	bool "H261_DEMUXER"
+	default y
+config H263_DEMUXER
+	bool "H263_DEMUXER"
+	default y
+config H264_DEMUXER
+	bool "H264_DEMUXER"
+	default y
+config IDCIN_DEMUXER
+	bool "IDCIN_DEMUXER"
+	default y
+config IFF_DEMUXER
+	bool "IFF_DEMUXER"
+	default y
+config IMAGE2_DEMUXER
+	bool "IMAGE2_DEMUXER"
+	default y
+config IMAGE2PIPE_DEMUXER
+	bool "IMAGE2PIPE_DEMUXER"
+	default y
+config INGENIENT_DEMUXER
+	bool "INGENIENT_DEMUXER"
+	default y
+config IPMOVIE_DEMUXER
+	bool "IPMOVIE_DEMUXER"
+	default y
+config ISS_DEMUXER
+	bool "ISS_DEMUXER"
+	default y
+config LMLM4_DEMUXER
+	bool "LMLM4_DEMUXER"
+	default y
+config M4V_DEMUXER
+	bool "M4V_DEMUXER"
+	default y
+config MATROSKA_DEMUXER
+	bool "MATROSKA_DEMUXER"
+	default y
+config MJPEG_DEMUXER
+	bool "MJPEG_DEMUXER"
+	default y
+config MLP_DEMUXER
+	bool "MLP_DEMUXER"
+	default y
+config MM_DEMUXER
+	bool "MM_DEMUXER"
+	default y
+config MMF_DEMUXER
+	bool "MMF_DEMUXER"
+	default y
+config MOV_DEMUXER
+	bool "MOV_DEMUXER"
+	default y
+config MP3_DEMUXER
+	bool "MP3_DEMUXER"
+	default y
+config MPC_DEMUXER
+	bool "MPC_DEMUXER"
+	default y
+config MPC8_DEMUXER
+	bool "MPC8_DEMUXER"
+	default y
+config MPEGPS_DEMUXER
+	bool "MPEGPS_DEMUXER"
+	default n
+config MPEGTS_DEMUXER
+	bool "MPEGTS_DEMUXER"
+	default n
+config MPEGTSRAW_DEMUXER
+	bool "MPEGTSRAW_DEMUXER"
+	default n
+config MPEGVIDEO_DEMUXER
+	bool "MPEGVIDEO_DEMUXER"
+	default n
+config MSNWC_TCP_DEMUXER
+	bool "MSNWC_TCP_DEMUXER"
+	default y
+config MTV_DEMUXER
+	bool "MTV_DEMUXER"
+	default y
+config MVI_DEMUXER
+	bool "MVI_DEMUXER"
+	default y
+config MXF_DEMUXER
+	bool "MXF_DEMUXER"
+	default y
+config NC_DEMUXER
+	bool "NC_DEMUXER"
+	default y
+config NSV_DEMUXER
+	bool "NSV_DEMUXER"
+	default y
+config NUT_DEMUXER
+	bool "NUT_DEMUXER"
+	default y
+config NUV_DEMUXER
+	bool "NUV_DEMUXER"
+	default y
+config OGG_DEMUXER
+	bool "OGG_DEMUXER"
+	default y
+config OMA_DEMUXER
+	bool "OMA_DEMUXER"
+	default y
+config PCM_ALAW_DEMUXER
+	bool "PCM_ALAW_DEMUXER"
+	default y
+config PCM_MULAW_DEMUXER
+	bool "PCM_MULAW_DEMUXER"
+	default y
+config PCM_F64BE_DEMUXER
+	bool "PCM_F64BE_DEMUXER"
+	default y
+config PCM_F64LE_DEMUXER
+	bool "PCM_F64LE_DEMUXER"
+	default y
+config PCM_F32BE_DEMUXER
+	bool "PCM_F32BE_DEMUXER"
+	default y
+config PCM_F32LE_DEMUXER
+	bool "PCM_F32LE_DEMUXER"
+	default y
+config PCM_S32BE_DEMUXER
+	bool "PCM_S32BE_DEMUXER"
+	default y
+config PCM_S32LE_DEMUXER
+	bool "PCM_S32LE_DEMUXER"
+	default y
+config PCM_S24BE_DEMUXER
+	bool "PCM_S24BE_DEMUXER"
+	default y
+config PCM_S24LE_DEMUXER
+	bool "PCM_S24LE_DEMUXER"
+	default y
+config PCM_S16BE_DEMUXER
+	bool "PCM_S16BE_DEMUXER"
+	default y
+config PCM_S16LE_DEMUXER
+	bool "PCM_S16LE_DEMUXER"
+	default y
+config PCM_S8_DEMUXER
+	bool "PCM_S8_DEMUXER"
+	default y
+config PCM_U32BE_DEMUXER
+	bool "PCM_U32BE_DEMUXER"
+	default y
+config PCM_U32LE_DEMUXER
+	bool "PCM_U32LE_DEMUXER"
+	default y
+config PCM_U24BE_DEMUXER
+	bool "PCM_U24BE_DEMUXER"
+	default y
+config PCM_U24LE_DEMUXER
+	bool "PCM_U24LE_DEMUXER"
+	default y
+config PCM_U16BE_DEMUXER
+	bool "PCM_U16BE_DEMUXER"
+	default y
+config PCM_U16LE_DEMUXER
+	bool "PCM_U16LE_DEMUXER"
+	default y
+config PCM_U8_DEMUXER
+	bool "PCM_U8_DEMUXER"
+	default y
+config PVA_DEMUXER
+	bool "PVA_DEMUXER"
+	default y
+config QCP_DEMUXER
+	bool "QCP_DEMUXER"
+	default y
+config R3D_DEMUXER
+	bool "R3D_DEMUXER"
+	default y
+config RAWVIDEO_DEMUXER
+	bool "RAWVIDEO_DEMUXER"
+	default y
+config RL2_DEMUXER
+	bool "RL2_DEMUXER"
+	default y
+config RM_DEMUXER
+	bool "RM_DEMUXER"
+	default y
+config ROQ_DEMUXER
+	bool "ROQ_DEMUXER"
+	default y
+config RPL_DEMUXER
+	bool "RPL_DEMUXER"
+	default y
+config SEGAFILM_DEMUXER
+	bool "SEGAFILM_DEMUXER"
+	default y
+config SHORTEN_DEMUXER
+	bool "SHORTEN_DEMUXER"
+	default y
+config SIFF_DEMUXER
+	bool "SIFF_DEMUXER"
+	default y
+config SMACKER_DEMUXER
+	bool "SMACKER_DEMUXER"
+	default y
+config SOL_DEMUXER
+	bool "SOL_DEMUXER"
+	default y
+config SOX_DEMUXER
+	bool "SOX_DEMUXER"
+	default y
+config STR_DEMUXER
+	bool "STR_DEMUXER"
+	default y
+config SWF_DEMUXER
+	bool "SWF_DEMUXER"
+	default y
+config THP_DEMUXER
+	bool "THP_DEMUXER"
+	default y
+config TIERTEXSEQ_DEMUXER
+	bool "TIERTEXSEQ_DEMUXER"
+	default y
+config TMV_DEMUXER
+	bool "TMV_DEMUXER"
+	default y
+config TRUEHD_DEMUXER
+	bool "TRUEHD_DEMUXER"
+	default y
+config TTA_DEMUXER
+	bool "TTA_DEMUXER"
+	default y
+config TXD_DEMUXER
+	bool "TXD_DEMUXER"
+	default y
+config VC1_DEMUXER
+	bool "VC1_DEMUXER"
+	default y
+config VC1T_DEMUXER
+	bool "VC1T_DEMUXER"
+	default y
+config VMD_DEMUXER
+	bool "VMD_DEMUXER"
+	default y
+config VOC_DEMUXER
+	bool "VOC_DEMUXER"
+	default y
+config VQF_DEMUXER
+	bool "VQF_DEMUXER"
+	default y
+config W64_DEMUXER
+	bool "W64_DEMUXER"
+	default y
+config WAV_DEMUXER
+	bool "WAV_DEMUXER"
+	default y
+config WC3_DEMUXER
+	bool "WC3_DEMUXER"
+	default y
+config WSAUD_DEMUXER
+	bool "WSAUD_DEMUXER"
+	default y
+config WSVQA_DEMUXER
+	bool "WSVQA_DEMUXER"
+	default y
+config WV_DEMUXER
+	bool "WV_DEMUXER"
+	default y
+config XA_DEMUXER
+	bool "XA_DEMUXER"
+	default y
+config YUV4MPEGPIPE_DEMUXER
+	bool "YUV4MPEGPIPE_DEMUXER"
+	default n
+
+config AVISYNTH_DEMUXER
+	bool "AVISYNTH_DEMUXER"
+	default n
+config RTSP_DEMUXER
+	bool "RTSP_DEMUXER"
+	default n
+config SDP_DEMUXER
+	bool "SDP_DEMUXER"
+	default n
+config LIBNUT_DEMUXER
+	bool "LIBNUT_DEMUXER"
+	default n

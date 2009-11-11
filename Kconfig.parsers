@@ -1,0 +1,57 @@
+config AAC_PARSER
+	bool "AAC_PARSER"
+	default y
+config AC3_PARSER
+	bool "AC3_PARSER"
+	default y
+config CAVSVIDEO_PARSER
+	bool "CAVSVIDEO_PARSER"
+	default y
+config DCA_PARSER
+	bool "DCA_PARSER"
+	default y
+config DIRAC_PARSER
+	bool "DIRAC_PARSER"
+	default y
+config DNXHD_PARSER
+	bool "DNXHD_PARSER"
+	default y
+config DVBSUB_PARSER
+	bool "DVBSUB_PARSER"
+	default y
+config DVDSUB_PARSER
+	bool "DVDSUB_PARSER"
+	default y
+config H261_PARSER
+	bool "H261_PARSER"
+	default n
+config H263_PARSER
+	bool "H263_PARSER"
+	default n
+config H264_PARSER
+	bool "H264_PARSER"
+	default n
+config MJPEG_PARSER
+	bool "MJPEG_PARSER"
+	default y
+config MLP_PARSER
+	bool "MLP_PARSER"
+	default y
+config MPEG4VIDEO_PARSER
+	bool "MPEG4VIDEO_PARSER"
+	default n
+config MPEGAUDIO_PARSER
+	bool "MPEGAUDIO_PARSER"
+	default n
+config MPEGVIDEO_PARSER
+	bool "MPEGVIDEO_PARSER"
+	default n
+config PNM_PARSER
+	bool "PNM_PARSER"
+	default y
+config VC1_PARSER
+	bool "VC1_PARSER"
+	default n
+config VP3_PARSER
+	bool "VP3_PARSER"
+	default y

@@ -1,0 +1,47 @@
+menuconfig MPLAYER
+	bool "mplayer"
+	default n
+	help
+	  MPlayer - The Movie Player
+
+if MPLAYER
+menu "Features"
+source Kconfig.features
+endmenu
+
+menuconfig DECODERS
+	bool "Decoders"
+	default y
+if DECODERS
+source Kconfig.decoders
+endif
+
+menuconfig ENCODERS
+	bool "Encoders"
+	default y
+if ENCODERS
+source Kconfig.encoders
+endif
+
+menu "Parsers"
+source Kconfig.parsers
+endmenu
+
+menuconfig DEMUXERS
+	bool "Demuxers"
+	default y
+if DEMUXERS
+source Kconfig.demuxers
+endif
+
+menuconfig MUXERS
+	bool "Muxers"
+	default y
+if MUXERS
+source Kconfig.muxers
+endif
+
+menu "BSF"
+source Kconfig.bsf
+endmenu
+endif
