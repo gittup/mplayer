@@ -271,7 +271,7 @@ const vo_functions_t* const video_out_drivers[] =
 #ifdef CONFIG_PNM
         &video_out_pnm,
 #endif
-#ifdef CONFIG_MD5SUM
+#ifdef CONFIG_MPLAYER_MD5SUM
         &video_out_md5sum,
 #endif
         NULL
