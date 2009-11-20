@@ -21,17 +21,6 @@ include $(GITTUP_ROOT)/mplayer/mplayer.tup
 # with MPlayer; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-LIBAVUTIL = yes
-LIBAVUTIL_A = yes
-LIBAVCODEC = yes
-LIBAVCODEC_A = yes
-LIBAVFORMAT = yes
-LIBAVFORMAT_A = yes
-LIBPOSTPROC = yes
-LIBPOSTPROC_A = yes
-LIBSWSCALE = yes
-LIBSWSCALE_A = yes
-
 GETCH = getch2.c
 TIMER = timer-linux.c
 
@@ -716,11 +705,11 @@ SRCS_MENCODER = mencoder.c \
                 $(SRCS_MENCODER-y)
 
 
-COMMON_LIBS-$(LIBAVFORMAT_A)      += libavformat/libavformat.a
-COMMON_LIBS-$(LIBAVCODEC_A)       += libavcodec/libavcodec.a
-COMMON_LIBS-$(LIBAVUTIL_A)        += libavutil/libavutil.a
-COMMON_LIBS-$(LIBPOSTPROC_A)      += libpostproc/libpostproc.a
-COMMON_LIBS-$(LIBSWSCALE_A)       += libswscale/libswscale.a
+COMMON_LIBS-@(LIBAVFORMAT_A)      += libavformat/libavformat.a
+COMMON_LIBS-@(LIBAVCODEC_A)       += libavcodec/libavcodec.a
+COMMON_LIBS-@(LIBAVUTIL_A)        += libavutil/libavutil.a
+COMMON_LIBS-@(LIBPOSTPROC_A)      += libpostproc/libpostproc.a
+COMMON_LIBS-@(LIBSWSCALE_A)       += libswscale/libswscale.a
 COMMON_LIBS += $(COMMON_LIBS-yes)
 
 objs_COMMON    += $(addsuffix .c, $(basename $(SRCS_COMMON)))

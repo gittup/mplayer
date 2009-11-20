@@ -460,6 +460,37 @@ config RDFT
 	bool "RDFT"
 	default y
 
+config LIBAVUTIL
+	bool "LIBAVUTIL"
+	default y
+config LIBAVUTIL_A
+	bool "LIBAVUTIL_A"
+	default y
+config LIBAVCODEC
+	bool "LIBAVCODEC"
+	default y
+config LIBAVCODEC_A
+	bool "LIBAVCODEC_A"
+	default y
+config LIBAVFORMAT
+	bool "LIBAVFORMAT"
+	default y
+config LIBAVFORMAT_A
+	bool "LIBAVFORMAT_A"
+	default y
+config LIBPOSTPROC
+	bool "LIBPOSTPROC"
+	default n
+config LIBPOSTPROC_A
+	bool "LIBPOSTPROC_A"
+	default n
+config LIBSWSCALE
+	bool "LIBSWSCALE"
+	default y
+config LIBSWSCALE_A
+	bool "LIBSWSCALE_A"
+	default y
+
 config FILE_PROTOCOL
 	bool "FILE_PROTOCOL"
 	default n
