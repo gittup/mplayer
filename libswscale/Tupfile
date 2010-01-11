@@ -12,7 +12,7 @@ objs-@(MLIB)        +=  mlib/yuv2rgb_mlib.c
 objs-$(HAVE_ALTIVEC)       +=  ppc/yuv2rgb_altivec.c
 objs-$(HAVE_VIS)           +=  sparc/yuv2rgb_vis.c
 
-#MMX-objs-@(MPLAYER_GPL)     +=  x86/yuv2rgb_mmx.c
+objs-@(GPL)     +=  x86/yuv2rgb_mmx.c
 
 ifeq (@(MPLAYER),y)
 : foreach $(objs-y) |> !cc |> %B.o {objs}

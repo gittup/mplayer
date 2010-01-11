@@ -138,7 +138,7 @@ config LADSPA
 	default n
 config LIBA52
 	bool "LIBA52"
-	default n
+	default y
 config LIBA52_INTERNAL
 	bool "LIBA52_INTERNAL"
 	default y
@@ -515,3 +515,15 @@ config TCP_PROTOCOL
 config UDP_PROTOCOL
 	bool "UDP_PROTOCOL"
 	default n
+config HAVE_MMX
+	bool "HAVE_MMX"
+	default y
+config HAVE_SSE
+	bool "HAVE_SSE"
+	default y
+config HAVE_SSE2
+	bool "HAVE_SSE2"
+	default y
+config GPL
+	bool "GPL"
+	default y
