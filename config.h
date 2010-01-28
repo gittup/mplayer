@@ -257,4 +257,7 @@
 #define CONFIG_VC1_VAAPI_HWACCEL 0
 #define CONFIG_WMV3_VAAPI_HWACCEL 0
 
+#define FFMPEG_CONFIGURATION "gittup.org"
+#define FFMPEG_LICENSE "GPL version 2 or later"
+
 #endif /* MPLAYER_CONFIG_H */
