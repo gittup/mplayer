@@ -1,0 +1,2 @@
+# This file is common to all mplayer sub-libraries, but not mplayer itself
+CFLAGS += -DHAVE_AV_CONFIG_H
