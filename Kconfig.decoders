@@ -728,3 +728,6 @@ config LIBOPENJPEG_DECODER
 config LIBSPEEX_DECODER
 	bool "LIBSPEEX_DECODER"
 	default n
+config ALS_DECODER
+	bool "ALS_DECODER"
+	default n
