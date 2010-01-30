@@ -737,3 +737,6 @@ config CDGRAPHICS_DECODER
 config R210_DECODER
 	bool "R210_DECODER"
 	default n
+config AURA_DECODER
+	bool "AURA_DECODER"
+	default n
