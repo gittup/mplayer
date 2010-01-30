@@ -731,3 +731,6 @@ config LIBSPEEX_DECODER
 config ALS_DECODER
 	bool "ALS_DECODER"
 	default n
+config CDGRAPHICS_DECODER
+	bool "CDGRAPHICS_DECODER"
+	default n
