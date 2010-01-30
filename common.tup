@@ -1,3 +1,7 @@
 # This file is common to all mplayer sub-libraries, but not mplayer itself
 CFLAGS += -DHAVE_AV_CONFIG_H
 CFLAGS += -ftup-n-is-zero
+
+# TODO: Reuse !cc for !mplayer.c
+!mplayer.c = | $(compiler_files) |> ^ CC %f^ $(CC) -c %f -o %o $(BASE_CFLAGS) $(CFLAGS) $(CFLAGS_%e) $(CFLAGS_%f) |>
+!mplayer.asm = |> ^ YASM %f^ yasm -f ELF %f |>
