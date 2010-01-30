@@ -746,3 +746,6 @@ config AURA2_DECODER
 config ANM_DECODER
 	bool "ANM_DECODER"
 	default n
+config SIPR_DECODER
+	bool "SIPR_DECODER"
+	default n
