@@ -524,6 +524,12 @@ config HAVE_SSE
 config HAVE_SSE2
 	bool "HAVE_SSE2"
 	default y
+config HAVE_YASM
+	bool "HAVE_YASM"
+	default y
+config HAVE_PTHREADS
+	bool "HAVE_PTHREADS"
+	default y
 config GPL
 	bool "GPL"
 	default y
