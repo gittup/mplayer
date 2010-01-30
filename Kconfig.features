@@ -533,3 +533,6 @@ config HAVE_PTHREADS
 config GPL
 	bool "GPL"
 	default y
+config H264_DXVA2_HWACCEL
+	bool "H264_DXVA2_HWACCEL"
+	default n
