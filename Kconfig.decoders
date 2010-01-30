@@ -698,6 +698,9 @@ config MPEG_VDPAU_DECODER
 config MPEG1_VDPAU_DECODER
 	bool "MPEG1_VDPAU_DECODER"
 	default n
+config MPEG4_VDPAU_DECODER
+	bool "MPEG4_VDPAU_DECODER"
+	default n
 config VC1_VDPAU_DECODER
 	bool "VC1_VDPAU_DECODER"
 	default n
