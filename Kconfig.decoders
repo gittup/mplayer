@@ -743,3 +743,6 @@ config AURA_DECODER
 config AURA2_DECODER
 	bool "AURA2_DECODER"
 	default n
+config ANM_DECODER
+	bool "ANM_DECODER"
+	default n
