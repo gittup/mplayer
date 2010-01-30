@@ -740,3 +740,6 @@ config R210_DECODER
 config AURA_DECODER
 	bool "AURA_DECODER"
 	default n
+config AURA2_DECODER
+	bool "AURA2_DECODER"
+	default n
