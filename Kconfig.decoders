@@ -734,3 +734,6 @@ config ALS_DECODER
 config CDGRAPHICS_DECODER
 	bool "CDGRAPHICS_DECODER"
 	default n
+config R210_DECODER
+	bool "R210_DECODER"
+	default n
