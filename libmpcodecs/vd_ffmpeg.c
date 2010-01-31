@@ -27,6 +27,10 @@ LIBVD_EXTERN(ffmpeg)
 
 #include "libavcodec/avcodec.h"
 
+#if AVPALETTE_SIZE > 1024
+#error palette too large, adapt libmpcodecs/vf.c:vf_get_image
+#endif
+
 #if CONFIG_XVMC
 #include "libavcodec/xvmc.h"
 #endif
@@ -55,7 +59,7 @@ typedef struct {
 
 static int get_buffer(AVCodecContext *avctx, AVFrame *pic);
 static void release_buffer(AVCodecContext *avctx, AVFrame *pic);
-static void draw_slice(struct AVCodecContext *s, AVFrame *src, int offset[4],
+static void draw_slice(struct AVCodecContext *s, const AVFrame *src, int offset[4],
                        int y, int type, int height);
 
 static enum PixelFormat get_format(struct AVCodecContext *avctx,
@@ -159,6 +163,7 @@ void mp_msp_av_log_callback(void *ptr, int level, const char *fmt, va_list vl)
     char buf[256];
 
     switch(level){
+    case AV_LOG_VERBOSE: mp_level = MSGL_V ; break;
     case AV_LOG_DEBUG:  mp_level= MSGL_V   ; break;
     case AV_LOG_INFO :  mp_level= MSGL_INFO; break;
     case AV_LOG_ERROR:  mp_level= MSGL_ERR ; break;
@@ -202,6 +207,8 @@ void mp_msp_av_log_callback(void *ptr, int level, const char *fmt, va_list vl)
 
 static void set_format_params(struct AVCodecContext *avctx, enum PixelFormat fmt){
     int imgfmt;
+    if (fmt == PIX_FMT_NONE)
+        return;
     imgfmt = pixfmt2imgfmt(fmt);
     if (IMGFMT_IS_XVMC(imgfmt) || IMGFMT_IS_VDPAU(imgfmt)) {
         sh_video_t *sh     = avctx->opaque;
@@ -450,7 +457,7 @@ static void uninit(sh_video_t *sh){
 }
 
 static void draw_slice(struct AVCodecContext *s,
-                        AVFrame *src, int offset[4],
+                        const AVFrame *src, int offset[4],
                         int y, int type, int height){
     sh_video_t *sh = s->opaque;
     uint8_t *source[MP_MAX_PLANES]= {src->data[0] + offset[0], src->data[1] + offset[1], src->data[2] + offset[2]};
@@ -535,10 +542,8 @@ static int get_buffer(AVCodecContext *avctx, AVFrame *pic){
     int type= MP_IMGTYPE_IPB;
     int width= avctx->width;
     int height= avctx->height;
-    int align=15;
+    avcodec_align_dimensions(avctx, &width, &height);
 //printf("get_buffer %d %d %d\n", pic->reference, ctx->ip_count, ctx->b_count);
-    if(avctx->pix_fmt == PIX_FMT_YUV410P)
-        align=63; //yes seriously, its really needed (16x16 chroma blocks in SVQ1 -> 64x64)
 
     if (pic->buffer_hints) {
         mp_msg(MSGT_DECVIDEO, MSGL_DBG2, "Buffer hints: %u\n", pic->buffer_hints);
@@ -594,8 +599,9 @@ static int get_buffer(AVCodecContext *avctx, AVFrame *pic){
         mp_msg(MSGT_DECVIDEO, MSGL_DBG2, type== MP_IMGTYPE_IPB ? "using IPB\n" : "using IP\n");
     }
 
-    mpi= mpcodecs_get_image(sh, type, flags,
-                        (width+align)&(~align), (height+align)&(~align));
+    if (ctx->best_csp == IMGFMT_RGB8 || ctx->best_csp == IMGFMT_BGR8)
+        flags |= MP_IMGFLAG_RGB_PALETTE;
+    mpi= mpcodecs_get_image(sh, type, flags, width, height);
     if (!mpi) return -1;
 
     // ok, let's see what did we get:
@@ -632,13 +638,10 @@ static int get_buffer(AVCodecContext *avctx, AVFrame *pic){
     }
 #endif
 
-    // Palette support: libavcodec copies palette to *data[1]
-    if (mpi->bpp == 8)
-        mpi->planes[1] = av_malloc(AVPALETTE_SIZE);
-
     pic->data[0]= mpi->planes[0];
     pic->data[1]= mpi->planes[1];
     pic->data[2]= mpi->planes[2];
+    pic->data[3]= mpi->planes[3];
 
 #if 0
     assert(mpi->width >= ((width +align)&(~align)));
@@ -663,6 +666,7 @@ static int get_buffer(AVCodecContext *avctx, AVFrame *pic){
     pic->linesize[0]= mpi->stride[0];
     pic->linesize[1]= mpi->stride[1];
     pic->linesize[2]= mpi->stride[2];
+    pic->linesize[3]= mpi->stride[3];
 
     pic->opaque = mpi;
 //printf("%X\n", (int)mpi->planes[0]);
@@ -884,9 +888,11 @@ static mp_image_t *decode(sh_video_t *sh, void *data, int len, int flags){
         mpi->planes[0]=pic->data[0];
         mpi->planes[1]=pic->data[1];
         mpi->planes[2]=pic->data[2];
+        mpi->planes[3]=pic->data[3];
         mpi->stride[0]=pic->linesize[0];
         mpi->stride[1]=pic->linesize[1];
         mpi->stride[2]=pic->linesize[2];
+        mpi->stride[3]=pic->linesize[3];
     }
 
     if (!mpi->planes[0])

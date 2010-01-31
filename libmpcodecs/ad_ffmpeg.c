@@ -93,7 +93,7 @@ static int init(sh_audio_t *sh_audio)
         mp_msg(MSGT_DECAUDIO,MSGL_ERR, MSGTR_CantOpenCodec);
         return 0;
     }
-   mp_msg(MSGT_DECAUDIO,MSGL_V,"INFO: libavcodec init OK!\n");
+   mp_msg(MSGT_DECAUDIO,MSGL_V,"INFO: libavcodec \"%s\" init OK!\n", lavc_codec->name);
 
 //   printf("\nFOURCC: 0x%X\n",sh_audio->format);
    if(sh_audio->format==0x3343414D){
@@ -163,31 +163,38 @@ static int decode_audio(sh_audio_t *sh_audio,unsigned char *buf,int minlen,int m
     unsigned char *start=NULL;
     int y,len=-1;
     while(len<minlen){
+	AVPacket pkt;
 	int len2=maxlen;
 	double pts;
 	int x=ds_get_packet_pts(sh_audio->ds,&start, &pts);
-	if(x<=0) break; // error
+	if(x<=0) {
+	    start = NULL;
+	    x = 0;
+	    ds_parse(sh_audio->ds, &start, &x, MP_NOPTS_VALUE, 0);
+	    if (x <= 0)
+	        break; // error
+	} else {
+	    int in_size = x;
+	    int consumed = ds_parse(sh_audio->ds, &start, &x, pts, 0);
+	    sh_audio->ds->buffer_pos -= in_size - consumed;
+	}
+	av_init_packet(&pkt);
+	pkt.data = start;
+	pkt.size = x;
 	if (pts != MP_NOPTS_VALUE) {
 	    sh_audio->pts = pts;
 	    sh_audio->pts_bytes = 0;
 	}
-	y=avcodec_decode_audio2(sh_audio->context,(int16_t*)buf,&len2,start,x);
+	y=avcodec_decode_audio3(sh_audio->context,(int16_t*)buf,&len2,&pkt);
 //printf("return:%d samples_out:%d bitstream_in:%d sample_sum:%d\n", y, len2, x, len); fflush(stdout);
 	if(y<0){ mp_msg(MSGT_DECAUDIO,MSGL_V,"lavc_audio: error\n");break; }
-	if(y<x) sh_audio->ds->buffer_pos+=y-x;  // put back data (HACK!)
+	if(!sh_audio->parser && y<x)
+	    sh_audio->ds->buffer_pos+=y-x;  // put back data (HACK!)
 	if(len2>0){
 	  if (((AVCodecContext *)sh_audio->context)->channels >= 5) {
-            int src_ch_layout = AF_CHANNEL_LAYOUT_MPLAYER_DEFAULT;
             int samplesize = av_get_bits_per_sample_format(((AVCodecContext *)
                                     sh_audio->context)->sample_fmt) / 8;
-            const char *codec=((AVCodecContext*)sh_audio->context)->codec->name;
-            if (!strcasecmp(codec, "aac"))
-              src_ch_layout = AF_CHANNEL_LAYOUT_LAVC_AAC_DEC_DEFAULT;
-            else if (!strcasecmp(codec, "vorbis"))
-              src_ch_layout = AF_CHANNEL_LAYOUT_VORBIS_DEFAULT;
-            else
-              src_ch_layout = AF_CHANNEL_LAYOUT_LAVC_DEFAULT;
-            reorder_channel_nch(buf, src_ch_layout,
+            reorder_channel_nch(buf, AF_CHANNEL_LAYOUT_LAVC_DEFAULT,
                                 AF_CHANNEL_LAYOUT_MPLAYER_DEFAULT,
                                 ((AVCodecContext *)sh_audio->context)->channels,
                                 len2 / samplesize, samplesize);

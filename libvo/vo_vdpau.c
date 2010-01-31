@@ -33,7 +33,6 @@
  */
 
 #include <stdio.h>
-#include <dlfcn.h>
 
 #include "config.h"
 #include "mp_msg.h"
@@ -51,7 +50,6 @@
 #include "libavutil/common.h"
 #include "libavutil/mathematics.h"
 
-#include "libass/ass.h"
 #include "libass/ass_mp.h"
 
 static vo_info_t info = {
@@ -76,7 +74,7 @@ LIBVO_EXTERN(vdpau)
                message, vdp_get_error_string(vdp_st));
 
 /* number of video and output surfaces */
-#define NUM_OUTPUT_SURFACES                2
+#define NUM_OUTPUT_SURFACES                3
 #define MAX_VIDEO_SURFACES                 50
 
 /* number of palette entries */
@@ -93,7 +91,6 @@ LIBVO_EXTERN(vdpau)
  * win_x11_init_vdpau_flip_queue() functions
  */
 static VdpDevice                          vdp_device;
-static VdpDeviceCreateX11                *vdp_device_create;
 static VdpGetProcAddress                 *vdp_get_proc_address;
 
 static VdpPresentationQueueTarget         vdp_flip_target;
@@ -144,7 +141,6 @@ static VdpDecoderRender                          *vdp_decoder_render;
 static VdpGenerateCSCMatrix                      *vdp_generate_csc_matrix;
 static VdpPreemptionCallbackRegister             *vdp_preemption_callback_register;
 
-static void                              *vdpau_lib_handle;
 /* output_surfaces[NUM_OUTPUT_SURFACES] is misused for OSD. */
 #define osd_surface output_surfaces[NUM_OUTPUT_SURFACES]
 static VdpOutputSurface                   output_surfaces[NUM_OUTPUT_SURFACES + 1];
@@ -156,7 +152,6 @@ static VdpVideoMixer                      video_mixer;
 static int                                deint;
 static int                                deint_type;
 static int                                deint_counter;
-static int                                deint_buffer_past_frames;
 static int                                pullup;
 static float                              denoise;
 static float                              sharpen;
@@ -165,6 +160,7 @@ static int                                chroma_deint;
 static int                                force_mixer;
 static int                                top_field_first;
 static int                                flip;
+static int                                hqscaling;
 
 static VdpDecoder                         decoder;
 static int                                decoder_max_refs;
@@ -394,7 +390,7 @@ static int win_x11_init_vdpau_procs(void)
         {0, NULL}
     };
 
-    vdp_st = vdp_device_create(mDisplay, mScreen,
+    vdp_st = vdp_device_create_x11(mDisplay, mScreen,
                                &vdp_device, &vdp_get_proc_address);
     if (vdp_st != VDP_STATUS_OK) {
         mp_msg(MSGT_VO, MSGL_ERR, "[vdpau] Error when calling vdp_device_create_x11: %i\n", vdp_st);
@@ -461,7 +457,7 @@ static int update_csc_matrix(void)
 static int create_vdp_mixer(VdpChromaType vdp_chroma_type)
 {
 #define VDP_NUM_MIXER_PARAMETER 3
-#define MAX_NUM_FEATURES 5
+#define MAX_NUM_FEATURES 6
     int i;
     VdpStatus vdp_st;
     int feature_count = 0;
@@ -493,6 +489,8 @@ static int create_vdp_mixer(VdpChromaType vdp_chroma_type)
         features[feature_count++] = VDP_VIDEO_MIXER_FEATURE_NOISE_REDUCTION;
     if (sharpen)
         features[feature_count++] = VDP_VIDEO_MIXER_FEATURE_SHARPNESS;
+    if (hqscaling)
+        features[feature_count++] = VDP_VIDEO_MIXER_FEATURE_HIGH_QUALITY_SCALING_L1 + (hqscaling - 1);
 
     vdp_st = vdp_video_mixer_create(vdp_device, feature_count, features,
                                     VDP_NUM_MIXER_PARAMETER,
@@ -552,13 +550,14 @@ static void free_video_specific(void)
     video_mixer = VDP_INVALID_HANDLE;
 }
 
-static int create_vdp_decoder(int max_refs)
+static int create_vdp_decoder(uint32_t format, uint32_t width, uint32_t height,
+                              int max_refs)
 {
     VdpStatus vdp_st;
     VdpDecoderProfile vdp_decoder_profile;
     if (decoder != VDP_INVALID_HANDLE)
         vdp_decoder_destroy(decoder);
-    switch (image_format) {
+    switch (format) {
     case IMGFMT_VDPAU_MPEG1:
         vdp_decoder_profile = VDP_DECODER_PROFILE_MPEG1;
         break;
@@ -575,11 +574,17 @@ static int create_vdp_decoder(int max_refs)
     case IMGFMT_VDPAU_VC1:
         vdp_decoder_profile = VDP_DECODER_PROFILE_VC1_ADVANCED;
         break;
+    case IMGFMT_VDPAU_MPEG4:
+        vdp_decoder_profile = VDP_DECODER_PROFILE_MPEG4_PART2_ASP;
+        break;
+    default:
+        goto err_out;
     }
     vdp_st = vdp_decoder_create(vdp_device, vdp_decoder_profile,
-                                vid_width, vid_height, max_refs, &decoder);
+                                width, height, max_refs, &decoder);
     CHECK_ST_WARNING("Failed creating VDPAU decoder");
     if (vdp_st != VDP_STATUS_OK) {
+err_out:
         decoder = VDP_INVALID_HANDLE;
         decoder_max_refs = 0;
         return 0;
@@ -656,7 +661,8 @@ static int config(uint32_t width, uint32_t height, uint32_t d_width,
     vid_width    = width;
     vid_height   = height;
     free_video_specific();
-    if (IMGFMT_IS_VDPAU(image_format) && !create_vdp_decoder(2))
+    if (IMGFMT_IS_VDPAU(image_format)
+        && !create_vdp_decoder(image_format, vid_width, vid_height, 2))
         return -1;
 
     int_pause   = 0;
@@ -980,7 +986,7 @@ static int draw_slice(uint8_t *image[], int stride[], int w, int h,
     if (!IMGFMT_IS_VDPAU(image_format))
         return VO_FALSE;
     if ((decoder == VDP_INVALID_HANDLE || decoder_max_refs < max_refs)
-        && !create_vdp_decoder(max_refs))
+        && !create_vdp_decoder(image_format, vid_width, vid_height, max_refs))
         return VO_FALSE;
 
     vdp_st = vdp_decoder_render(decoder, rndr->surface, (void *)&rndr->info, rndr->bitstream_buffers_used, rndr->bitstream_buffers);
@@ -1016,13 +1022,11 @@ static uint32_t draw_image(mp_image_t *mpi)
     if (IMGFMT_IS_VDPAU(image_format)) {
         struct vdpau_render_state *rndr = mpi->priv;
         vid_surface_num = rndr - surface_render;
-        if (deint_buffer_past_frames) {
-            mpi->usage_count++;
-            if (deint_mpi[1])
-                deint_mpi[1]->usage_count--;
-            deint_mpi[1] = deint_mpi[0];
-            deint_mpi[0] = mpi;
-        }
+        mpi->usage_count++;
+        if (deint_mpi[1])
+            deint_mpi[1]->usage_count--;
+        deint_mpi[1] = deint_mpi[0];
+        deint_mpi[0] = mpi;
     } else if (image_format == IMGFMT_BGRA) {
         VdpStatus vdp_st;
         VdpRect r = {0, 0, vid_width, vid_height};
@@ -1104,7 +1108,9 @@ static int query_format(uint32_t format)
     case IMGFMT_VDPAU_H264:
     case IMGFMT_VDPAU_WMV3:
     case IMGFMT_VDPAU_VC1:
-        return default_flags;
+    case IMGFMT_VDPAU_MPEG4:
+        if (create_vdp_decoder(format, 48, 48, 2))
+            return default_flags;
     }
     return 0;
 }
@@ -1169,8 +1175,6 @@ static void uninit(void)
     vo_vm_close();
 #endif
     vo_x11_uninit();
-
-    dlclose(vdpau_lib_handle);
 }
 
 static const opt_t subopts[] = {
@@ -1181,6 +1185,7 @@ static const opt_t subopts[] = {
     {"sharpen", OPT_ARG_FLOAT, &sharpen, NULL},
     {"colorspace", OPT_ARG_INT, &colorspace, NULL},
     {"force-mixer", OPT_ARG_BOOL, &force_mixer, NULL},
+    {"hqscaling", OPT_ARG_INT, &hqscaling, (opt_test_f)int_non_neg},
     {NULL}
 };
 
@@ -1208,6 +1213,9 @@ static const char help_msg[] =
     "    1: ITU-R BT.601 (default)\n"
     "    2: ITU-R BT.709\n"
     "    3: SMPTE-240M\n"
+    "  hqscaling\n"
+    "    0: default VDPAU scaler\n"
+    "    1-9: high quality VDPAU scaler (needs capable hardware)\n"
     "  force-mixer\n"
     "    Use the VDPAU mixer (default)\n"
     "    Use noforce-mixer to allow BGRA output (disables all above options)\n"
@@ -1216,13 +1224,10 @@ static const char help_msg[] =
 static int preinit(const char *arg)
 {
     int i;
-    static const char *vdpaulibrary = "libvdpau.so.1";
-    static const char *vdpau_device_create = "vdp_device_create_x11";
 
     deint = 0;
     deint_type = 3;
     deint_counter = 0;
-    deint_buffer_past_frames = 0;
     deint_mpi[0] = deint_mpi[1] = NULL;
     chroma_deint = 1;
     pullup  = 0;
@@ -1230,32 +1235,19 @@ static int preinit(const char *arg)
     sharpen = 0;
     colorspace = 1;
     force_mixer = 1;
+    hqscaling = 0;
     if (subopt_parse(arg, subopts) != 0) {
         mp_msg(MSGT_VO, MSGL_FATAL, help_msg);
         return -1;
     }
     if (deint)
         deint_type = deint;
-    if (deint > 1)
-        deint_buffer_past_frames = 1;
     if (colorspace < 0 || colorspace > 3) {
         mp_msg(MSGT_VO, MSGL_WARN, "[vdpau] Invalid color space specified, "
                "using BT.601\n");
         colorspace = 1;
     }
 
-    vdpau_lib_handle = dlopen(vdpaulibrary, RTLD_LAZY);
-    if (!vdpau_lib_handle) {
-        mp_msg(MSGT_VO, MSGL_ERR, "[vdpau] Could not open dynamic library %s\n",
-               vdpaulibrary);
-        return -1;
-    }
-    vdp_device_create = dlsym(vdpau_lib_handle, vdpau_device_create);
-    if (!vdp_device_create) {
-        mp_msg(MSGT_VO, MSGL_ERR, "[vdpau] Could not find function %s in %s\n",
-               vdpau_device_create, vdpaulibrary);
-        return -1;
-    }
     if (!vo_init() || win_x11_init_vdpau_procs())
         return -1;
 
@@ -1344,7 +1336,6 @@ static int control(uint32_t request, void *data, ...)
                                                          features,
                                                          feature_enables);
             CHECK_ST_WARNING("Error changing deinterlacing settings")
-            deint_buffer_past_frames = 1;
         }
         return VO_TRUE;
     case VOCTRL_PAUSE:
@@ -1409,6 +1400,7 @@ static int control(uint32_t request, void *data, ...)
     case VOCTRL_GET_EOSD_RES: {
         mp_eosd_res_t *r = data;
         r->mt = r->mb = r->ml = r->mr = 0;
+        r->srcw = vid_width; r->srch = vid_height;
         if (vo_fs) {
             r->w = vo_screenwidth;
             r->h = vo_screenheight;

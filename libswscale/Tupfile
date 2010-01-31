@@ -2,18 +2,22 @@ include_rules
 include $(GITTUP_ROOT)/mplayer/mplayer.tup
 include $(GITTUP_ROOT)/mplayer/common.tup
 
-objs-y = options.c rgb2rgb.c swscale.c yuv2rgb.c
+NAME = swscale
+
+objs = options.c rgb2rgb.c swscale.c utils.c yuv2rgb.c
 
 objs-$(ARCH_BFIN)          +=  bfin/internal_bfin.c     \
                                bfin/swscale_bfin.c      \
                                bfin/yuv2rgb_bfin.c
 objs-@(MLIB)        +=  mlib/yuv2rgb_mlib.c
-objs-$(HAVE_ALTIVEC)       +=  ppc/yuv2rgb_altivec.c
-objs-$(HAVE_VIS)           +=  sparc/yuv2rgb_vis.c
+objs-@(HAVE_ALTIVEC)       +=  ppc/yuv2rgb_altivec.c
+objs-@(HAVE_VIS)           +=  sparc/yuv2rgb_vis.c
 
-objs-@(GPL)     +=  x86/yuv2rgb_mmx.c
+MMX-objs-@(GPL)     +=  x86/yuv2rgb_mmx.c        \
 
 ifeq (@(MPLAYER),y)
-: foreach $(objs-y) |> !cc |> %B.o {objs}
-: {objs} |> !ar |> libswscale.a
+objs-@(HAVE_MMX) += $(MMX-objs-y)
+objs += $(objs-y)
+: foreach $(objs) |> !mplayer. |> %B.o {objs}
+: {objs} |> !ar |> lib$(NAME).a
 endif

@@ -82,12 +82,15 @@
 
 
 /* system functions */
+#define HAVE_EXP2 1
+#define HAVE_EXP2F 1
 #define HAVE_GETHOSTBYNAME2 1
 #define HAVE_GETTIMEOFDAY 1
 #define HAVE_GLOB 1
 #define HAVE_LANGINFO 1
 #define HAVE_LLRINT 1
 #define HAVE_LOG2 1
+#define HAVE_LOG2F 1
 #define HAVE_LRINT 1
 #define HAVE_LRINTF 1
 
@@ -176,6 +179,7 @@
 #define HAVE_SSSE3 1
 #define HAVE_FAST_CMOV 0
 #define HAVE_CMOV 1
+#define HAVE_FAST_CLZ 0
 #define HAVE_PLD 0
 #define HAVE_ARMV5TE 0
 #define HAVE_ARMV6 0
@@ -256,6 +260,10 @@
 #define CONFIG_H264_VAAPI_HWACCEL 0
 #define CONFIG_VC1_VAAPI_HWACCEL 0
 #define CONFIG_WMV3_VAAPI_HWACCEL 0
+
+#define HAVE_STRUCT_ADDRINFO 1
+#define HAVE_GETADDRINFO 1
+#define HAVE_STRUCT_SOCKADDR_STORAGE 1
 
 #define FFMPEG_CONFIGURATION "gittup.org"
 #define FFMPEG_LICENSE "GPL version 2 or later"

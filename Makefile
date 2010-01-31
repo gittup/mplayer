@@ -106,8 +106,7 @@ SRCS_COMMON-$(HAVE_POSIX_SELECT)     += libmpcodecs/vf_bmovl.c
 SRCS_COMMON-$(HAVE_SYS_MMAN_H)       += libaf/af_export.c osdep/mmap_anon.c
 SRCS_COMMON-$(JPEG)                  += libmpcodecs/vd_ijpg.c
 SRCS_COMMON-$(LADSPA)                += libaf/af_ladspa.c
-SRCS_COMMON-$(LIBA52)                += libmpcodecs/ad_hwac3.c \
-                                        libmpcodecs/ad_liba52.c
+SRCS_COMMON-$(LIBA52)                += libmpcodecs/ad_liba52.c
 SRCS_COMMON-$(LIBA52_INTERNAL)       += liba52/crc.c \
                                         liba52/resample.c \
                                         liba52/bit_allocate.c \
@@ -116,16 +115,20 @@ SRCS_COMMON-$(LIBA52_INTERNAL)       += liba52/crc.c \
                                         liba52/imdct.c \
                                         liba52/parse.c \
 
-SRCS_COMMON-$(LIBASS)                += libass/ass.c \
+SRCS_COMMON-$(LIBASS)                += libmpcodecs/vf_ass.c \
+                                        libass/ass_mp.c \
+
+SRCS_COMMON-$(LIBASS_INTERNAL)       += libass/ass.c \
                                         libass/ass_bitmap.c \
                                         libass/ass_cache.c \
+                                        libass/ass_drawing.c \
                                         libass/ass_font.c \
                                         libass/ass_fontconfig.c \
                                         libass/ass_library.c \
-                                        libass/ass_mp.c \
+                                        libass/ass_parse.c \
                                         libass/ass_render.c \
+                                        libass/ass_strtod.c \
                                         libass/ass_utils.c \
-                                        libmpcodecs/vf_ass.c \
 
 SRCS_COMMON-$(LIBAVCODEC)            += av_opts.c \
                                         libaf/af_lavcresample.c \
@@ -144,7 +147,9 @@ SRCS_COMMON-$(LIBAVCODEC_A)          += libaf/af_lavcac3enc.c \
                                         libmpcodecs/vf_spp.c \
                                         libmpcodecs/vf_uspp.c \
 
-SRCS_COMMON-$(LIBAVFORMAT)           += libmpdemux/demux_lavf.c
+SRCS_COMMON-$(LIBAVFORMAT)           += libmpdemux/demux_lavf.c \
+                                        stream/stream_ffmpeg.c \
+
 SRCS_COMMON-$(LIBBS2B)               += libaf/af_bs2b.c
 SRCS_COMMON-$(LIBDCA)                += libmpcodecs/ad_libdca.c
 SRCS_COMMON-$(LIBDV)                 += libmpcodecs/ad_libdv.c \
@@ -271,8 +276,10 @@ SRCS_COMMON-$(TREMOR_INTERNAL)       += tremor/bitwise.c \
 SRCS_COMMON-$(TV)                    += stream/stream_tv.c stream/tv.c \
                                         stream/frequencies.c stream/tvi_dummy.c
 SRCS_COMMON-$(TV_BSDBT848)           += stream/tvi_bsdbt848.c
-SRCS_COMMON-$(TV_DSHOW)              += stream/tvi_dshow.c
-SRCS_COMMON-$(TV_TELETEXT)           += libmpcodecs/dec_teletext.c
+SRCS_COMMON-$(TV_DSHOW)              += stream/tvi_dshow.c \
+                                        loader/dshow/guids.c \
+                                        loader/dshow/mediatype.c \
+
 SRCS_COMMON-$(TV_V4L1)               += stream/tvi_v4l.c  stream/audio_in.c
 SRCS_COMMON-$(TV_V4L2)               += stream/tvi_v4l2.c stream/audio_in.c
 SRCS_COMMON-$(UNRAR_EXEC)            += unrar_exec.c
@@ -372,12 +379,14 @@ SRCS_COMMON = asxparser.c \
               libmpcodecs/ad_alaw.c \
               libmpcodecs/ad_dk3adpcm.c \
               libmpcodecs/ad_dvdpcm.c \
+              libmpcodecs/ad_hwac3.c \
               libmpcodecs/ad_hwmpa.c \
               libmpcodecs/ad_imaadpcm.c \
               libmpcodecs/ad_msadpcm.c \
               libmpcodecs/ad_msgsm.c \
               libmpcodecs/ad_pcm.c \
               libmpcodecs/dec_audio.c \
+              libmpcodecs/dec_teletext.c \
               libmpcodecs/dec_video.c \
               libmpcodecs/img_format.c \
               libmpcodecs/mp_image.c \
@@ -537,8 +546,10 @@ SRCS_MPLAYER-$(ESD)          += libao2/ao_esd.c
 SRCS_MPLAYER-$(FBDEV)        += libvo/vo_fbdev.c libvo/vo_fbdev2.c
 SRCS_MPLAYER-$(GGI)          += libvo/vo_ggi.c
 SRCS_MPLAYER-$(GIF)          += libvo/vo_gif89a.c
-SRCS_MPLAYER-$(GL)           += libvo/gl_common.c libvo/vo_gl.c libvo/vo_gl2.c
+SRCS_MPLAYER-$(GL)           += libvo/gl_common.c libvo/vo_gl.c libvo/vo_gl2.c libvo/csputils.c
 SRCS_MPLAYER-$(GL_WIN32)     += libvo/w32_common.c
+SRCS_MPLAYER-$(GL_X11)       += libvo/x11_common.c
+SRCS_MPLAYER-$(MATRIXVIEW)   += libvo/vo_matrixview.c libvo/matrixview.c
 SRCS_MPLAYER-$(GUI)          += gui/bitmap.c
 SRCS_MPLAYER-$(GUI_GTK)      += gui/app.c \
                                 gui/cfg.c \
@@ -580,6 +591,7 @@ SRCS_MPLAYER-$(JACK)         += libao2/ao_jack.c
 SRCS_MPLAYER-$(JOYSTICK)     += input/joystick.c
 SRCS_MPLAYER-$(JPEG)         += libvo/vo_jpeg.c
 SRCS_MPLAYER-$(KVA)          += libvo/vo_kva.c
+SRCS_MPLAYER-$(LIBAVCODEC)   += libvo/vo_png.c
 SRCS_MPLAYER-$(LIBMENU)      += libmenu/menu.c \
                                 libmenu/menu_chapsel.c \
                                 libmenu/menu_cmdlist.c  \
@@ -598,7 +610,6 @@ SRCS_MPLAYER-$(MGA)           += libvo/vo_mga.c
 SRCS_MPLAYER-$(NAS)           += libao2/ao_nas.c
 SRCS_MPLAYER-$(OPENAL)        += libao2/ao_openal.c
 SRCS_MPLAYER-$(OSS)           += libao2/ao_oss.c
-SRCS_MPLAYER-$(PNG)           += libvo/vo_png.c
 SRCS_MPLAYER-$(PNM)           += libvo/vo_pnm.c
 SRCS_MPLAYER-$(PULSE)         += libao2/ao_pulse.c
 SRCS_MPLAYER-$(QUARTZ)        += libvo/vo_quartz.c libvo/osx_common.c
@@ -773,6 +784,7 @@ DIRS =  . \
         loader \
         loader/dshow \
         loader/dmo \
+        loader/wine \
         mp3lib \
         osdep \
         stream \
@@ -876,7 +888,7 @@ libdvdnav/%:   CFLAGS := -Ilibdvdnav -D__USE_UNIX98 -D_GNU_SOURCE -DHAVE_CONFIG_
 libdvdread4/%: CFLAGS := -Ilibdvdread4 -D__USE_UNIX98 -D_GNU_SOURCE $(CFLAGS_LIBDVDCSS_DVDREAD) $(CFLAGS)
 libfaad2/%:    CFLAGS := -Ilibfaad2 -D_GNU_SOURCE -DHAVE_CONFIG_H $(CFLAGS_FAAD_FIXED) $(CFLAGS)
 
-loader/%: CFLAGS += -Iloader -fno-omit-frame-pointer $(CFLAGS_NO_OMIT_LEAF_FRAME_POINTER)
+loader/%: CFLAGS += -fno-omit-frame-pointer $(CFLAGS_NO_OMIT_LEAF_FRAME_POINTER)
 #loader/%: CFLAGS += -Ddbg_printf=__vprintf -DTRACE=__vprintf -DDETAILED_OUT
 loader/win32%: CFLAGS += $(CFLAGS_STACKREALIGN)
 
@@ -889,7 +901,7 @@ tremor/%: CFLAGS += $(CFLAGS_TREMOR_LOW)
 vidix/%: CFLAGS += $(CFLAGS_DHAHELPER) $(CFLAGS_SVGALIB_HELPER)
 
 VIDIX_PCI_FILES = vidix/pci_dev_ids.c vidix/pci_ids.h vidix/pci_names.c \
-                  vidix/pci_names.h vidix/pci_vendors.h
+                  vidix/pci_vendors.h
 
 $(VIDIX_PCI_FILES): vidix/pci_db2c.awk vidix/pci.db
 	awk -f $^ $(VIDIX_PCIDB)

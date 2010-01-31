@@ -3,7 +3,7 @@
 //... Okay enough of the hw, now send the other two!
 //
 // Updated by: Gabrov <gabrov@freemail.hu>
-// Sync'ed with help_mp-en.h r29549 (2009. 09. 11.)
+// Sync'ed with help_mp-en.h r30044 (2010. 01. 16.)
 
 
 // ========================= MPlayer help ===========================
@@ -210,6 +210,7 @@ static const char help_text[]=
 #define MSGTR_OSDosd "OSD: %s"
 #define MSGTR_OSDChapter "Fejezet: (%d) %s"
 #define MSGTR_OSDAngle "Szög: %d/%d"
+#define MSGTR_OSDDeinterlace "Deinterlace: %s"
 
 // property values
 #define MSGTR_Enabled "bekapcsolva"
@@ -854,6 +855,7 @@ static const char help_text[]=
 #define MSGTR_LIBVO_FONT_LOAD_FT_CannotPrepareOSDFont "Nem lehet előkészíteni az OSD betűtípusát.\n"
 #define MSGTR_LIBVO_FONT_LOAD_FT_CannotGenerateTables "Nem generálhatóak a táblázatok.\n"
 #define MSGTR_LIBVO_FONT_LOAD_FT_DoneFreeTypeFailed "FT_Done_FreeType sikertelen.\n"
+#define MSGTR_LIBVO_FONT_LOAD_FT_FontconfigNoMatch "A Fontconfig-nak nem sikerült kiválasztani a betűtípust. Megpróbálom fontconfig nélkül...\n"
 
 // sub.c
 #define MSGTR_VO_SUB_Seekbar "Keresősáv"

@@ -50,7 +50,6 @@ static unsigned int opt_probesize = 0;
 static unsigned int opt_analyzeduration = 0;
 static char *opt_format;
 static char *opt_cryptokey;
-extern int ts_prog;
 static char *opt_avopt = NULL;
 
 const m_option_t lavfdopts_conf[] = {
@@ -68,7 +67,7 @@ typedef struct lavf_priv_t{
     AVInputFormat *avif;
     AVFormatContext *avfc;
     ByteIOContext *pb;
-    uint8_t buffer[BIO_BUFFER_SIZE];
+    uint8_t buffer[FFMAX(BIO_BUFFER_SIZE, PROBE_BUF_SIZE)];
     int audio_streams;
     int video_streams;
     int sub_streams;
@@ -132,8 +131,8 @@ static void list_formats(void) {
 
 static int lavf_check_file(demuxer_t *demuxer){
     AVProbeData avpd;
-    uint8_t buf[PROBE_BUF_SIZE];
     lavf_priv_t *priv;
+    int probe_data_size;
 
     if(!demuxer->priv)
         demuxer->priv=calloc(sizeof(lavf_priv_t),1);
@@ -155,11 +154,12 @@ static int lavf_check_file(demuxer_t *demuxer){
         return DEMUXER_TYPE_LAVF;
     }
 
-    if(stream_read(demuxer->stream, buf, PROBE_BUF_SIZE)!=PROBE_BUF_SIZE)
+    probe_data_size = stream_read(demuxer->stream, priv->buffer, PROBE_BUF_SIZE);
+    if(probe_data_size <= 0)
         return 0;
     avpd.filename= demuxer->stream->url;
-    avpd.buf= buf;
-    avpd.buf_size= PROBE_BUF_SIZE;
+    avpd.buf= priv->buffer;
+    avpd.buf_size= probe_data_size;
 
     priv->avif= av_probe_input_format(&avpd, 1);
     if(!priv->avif){
@@ -384,6 +384,8 @@ static void handle_stream(demuxer_t *demuxer, AVFormatContext *avfc, int i) {
                 type = 'a';
             else if(codec->codec_id == CODEC_ID_DVD_SUBTITLE)
                 type = 'v';
+            else if(codec->codec_id == CODEC_ID_DVB_TELETEXT)
+                type = 'd';
             else
                 break;
             sh_sub = new_sh_sub_sid(demuxer, i, priv->sub_streams);
@@ -430,7 +432,7 @@ static demuxer_t* demux_open_lavf(demuxer_t *demuxer){
 
     stream_seek(demuxer->stream, 0);
 
-    avfc = av_alloc_format_context();
+    avfc = avformat_alloc_context();
 
     if (opt_cryptokey)
         parse_cryptokey(avfc, opt_cryptokey);
@@ -463,7 +465,7 @@ static demuxer_t* demux_open_lavf(demuxer_t *demuxer){
 
     priv->pb = av_alloc_put_byte(priv->buffer, BIO_BUFFER_SIZE, 0,
                                  demuxer->stream, mp_read, NULL, mp_seek);
-    priv->pb->is_streamed = !demuxer->stream->end_pos || (demuxer->stream->flags & STREAM_SEEK) != STREAM_SEEK;
+    priv->pb->is_streamed = !demuxer->stream->end_pos || (demuxer->stream->flags & MP_STREAM_SEEK) != MP_STREAM_SEEK;
 
     if(av_open_input_stream(&avfc, priv->pb, mp_filename, priv->avif, &ap)<0){
         mp_msg(MSGT_HEADER,MSGL_ERR,"LAVF_header: av_open_input_stream() failed\n");
@@ -493,30 +495,12 @@ static demuxer_t* demux_open_lavf(demuxer_t *demuxer){
     for(i=0; i<avfc->nb_streams; i++)
         handle_stream(demuxer, avfc, i);
     if(avfc->nb_programs) {
-        int p, start=0, found=0;
-
-        if(ts_prog) {
-            for(p=0; p<avfc->nb_programs; p++) {
-                if(avfc->programs[p]->id == ts_prog) {
-                    start = p;
-                    found = 1;
-                    break;
-                }
-            }
-            if(!found) {
-                mp_msg(MSGT_HEADER,MSGL_ERR,"DEMUX_LAVF: program %d doesn't seem to be present\n", ts_prog);
-                return NULL;
-            }
-        }
-        p = start;
-        do {
+        int p;
+        for (p = 0; p < avfc->nb_programs; p++) {
             AVProgram *program = avfc->programs[p];
             t = av_metadata_get(program->metadata, "title", NULL, 0);
             mp_msg(MSGT_HEADER,MSGL_INFO,"LAVF: Program %d %s\n", program->id, t ? t->value : "");
-            if(!priv->cur_program && (demuxer->video->sh || demuxer->audio->sh))
-                priv->cur_program = program->id;
-            p = (p + 1) % avfc->nb_programs;
-        } while(p!=start);
+        }
     }
 
     mp_msg(MSGT_HEADER,MSGL_V,"LAVF: %d audio and %d video streams found\n",priv->audio_streams,priv->video_streams);
@@ -629,6 +613,9 @@ static int demux_lavf_control(demuxer_t *demuxer, int cmd, void *arg)
 
     switch (cmd) {
         case DEMUXER_CTRL_CORRECT_PTS:
+            if (!strcmp("matroska", priv->avif->name) ||
+                !strcmp("mpegts",   priv->avif->name))
+                return DEMUXER_CTRL_NOTIMPL;
 	    return DEMUXER_CTRL_OK;
         case DEMUXER_CTRL_GET_TIME_LENGTH:
 	    if (priv->avfc->duration == 0 || priv->avfc->duration == AV_NOPTS_VALUE)
@@ -711,8 +698,9 @@ static int demux_lavf_control(demuxer_t *demuxer, int cmd, void *arg)
             int p, i;
             int start;
 
-            if(priv->avfc->nb_programs < 2)
-                return DEMUXER_CTRL_NOTIMPL;
+            prog->vid = prog->aid = prog->sid = -2;	//no audio and no video by default
+            if(priv->avfc->nb_programs < 1)
+                return DEMUXER_CTRL_DONTKNOW;
 
             if(prog->progid == -1)
             {
@@ -727,10 +715,9 @@ static int demux_lavf_control(demuxer_t *demuxer, int cmd, void *arg)
                     if(priv->avfc->programs[i]->id == prog->progid)
                         break;
                 if(i==priv->avfc->nb_programs)
-                    return DEMUXER_CTRL_NOTIMPL;
+                    return DEMUXER_CTRL_DONTKNOW;
                 p = i;
             }
-            prog->vid = prog->aid = prog->sid = -2;	//no audio and no video by default
             start = p;
 redo:
             program = priv->avfc->programs[p];

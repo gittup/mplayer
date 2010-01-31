@@ -1,6 +1,6 @@
 .gitignore
 
 ifeq (@(MPLAYER),y)
-VIDIX_PCI_FILES = pci_dev_ids.c pci_ids.h pci_names.c pci_names.h pci_vendors.h
+VIDIX_PCI_FILES = pci_dev_ids.c pci_ids.h pci_names.c pci_vendors.h
 : pci_db2c.awk pci.db |> awk -f %f 1 |> $(VIDIX_PCI_FILES)
 endif

@@ -383,3 +383,15 @@ config SDP_DEMUXER
 config LIBNUT_DEMUXER
 	bool "LIBNUT_DEMUXER"
 	default n
+config ANM_DEMUXER
+	bool "ANM_DEMUXER"
+	default n
+config CDG_DEMUXER
+	bool "CDG_DEMUXER"
+	default n
+config FILMSTRIP_DEMUXER
+	bool "FILMSTRIP_DEMUXER"
+	default n
+config IV8_DEMUXER
+	bool "IV8_DEMUXER"
+	default n

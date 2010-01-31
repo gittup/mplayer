@@ -111,7 +111,9 @@ Enhancements:
 
  * implement Plextor compatible SCSI VCD reading
 
- * DirectX video acceleration -vo for Windows (similar to XvmC)
+ * DXVA / DXVA2 -vo for Windows
+
+ * GDI -vo for older windows versions
 
  * hardware MPEG encoding support (Ati cards)
 
@@ -139,11 +141,9 @@ Enhancements:
 
  * make -noborder work with all video outputs
 
- * add option to use ffmpeg network code (rtsp, http, mms etc)
-
 Difficult stuff:
 
- * RE all closed source codecs (QDMC, WMA9, Indeo 4/5, ...)
+ * RE all closed source codecs (Voxware, VIVO, MVI2, MSS1/MSS2, ...)
 
  * support for Bink codec
 

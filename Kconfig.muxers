@@ -266,3 +266,6 @@ config RTP_MUXER
 config LIBNUT_MUXER
 	bool "LIBNUT_MUXER"
 	default n
+config FILMSTRIP_MUXER
+	bool "FILMSTRIP_MUXER"
+	default n

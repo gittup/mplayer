@@ -18,6 +18,7 @@
 
 #include "config.h"
 
+#include "mp_taglists.h"
 #include "libavformat/avformat.h"
 #include "libavformat/riff.h"
 
@@ -34,6 +35,7 @@ static const AVCodecTag mp_wav_tags[] = {
     { CODEC_ID_EAC3,              MKTAG('E', 'A', 'C', '3')},
     { CODEC_ID_INTERPLAY_DPCM,    MKTAG('I', 'N', 'P', 'A')},
     { CODEC_ID_MLP,               MKTAG('M', 'L', 'P', ' ')},
+    { CODEC_ID_MP1,               0x50},
     { CODEC_ID_MUSEPACK7,         MKTAG('M', 'P', 'C', ' ')},
     { CODEC_ID_MUSEPACK8,         MKTAG('M', 'P', 'C', '8')},
     { CODEC_ID_NELLYMOSER,        MKTAG('N', 'E', 'L', 'L')},
@@ -85,6 +87,7 @@ static const AVCodecTag mp_bmp_tags[] = {
     { CODEC_ID_BETHSOFTVID,       MKTAG('B', 'E', 'T', 'H')},
     { CODEC_ID_BFI,               MKTAG('B', 'F', 'I', 'V')},
     { CODEC_ID_C93,               MKTAG('C', '9', '3', 'V')},
+    { CODEC_ID_CDGRAPHICS,        MKTAG('C', 'D', 'G', 'R')},
     { CODEC_ID_DNXHD,             MKTAG('A', 'V', 'd', 'n')},
     { CODEC_ID_DSICINVIDEO,       MKTAG('D', 'C', 'I', 'V')},
     { CODEC_ID_DXA,               MKTAG('D', 'X', 'A', '1')},
@@ -100,6 +103,7 @@ static const AVCodecTag mp_bmp_tags[] = {
     { CODEC_ID_RV20,              MKTAG('R', 'V', '2', '0')},
     { CODEC_ID_RV30,              MKTAG('R', 'V', '3', '0')},
     { CODEC_ID_RV40,              MKTAG('R', 'V', '4', '0')},
+    { CODEC_ID_TGV,               MKTAG('f', 'V', 'G', 'T')},
     { CODEC_ID_THP,               MKTAG('T', 'H', 'P', 'V')},
     { CODEC_ID_TIERTEXSEQVIDEO,   MKTAG('T', 'S', 'E', 'Q')},
     { CODEC_ID_TXD,               MKTAG('T', 'X', 'D', 'V')},

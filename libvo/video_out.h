@@ -74,6 +74,7 @@
 #define VOCTRL_GET_EOSD_RES 29
 typedef struct {
   int w, h; // screen dimensions, including black borders
+  int srcw, srch; // unscaled source dimensions
   int mt, mb, ml, mr; // borders (top, bottom, left, right)
 } mp_eosd_res_t;
 
@@ -249,6 +250,9 @@ extern float vo_fps;
 extern char *vo_subdevice;
 
 extern int vo_colorkey;
+
+extern char *vo_winname;
+extern char *vo_wintitle;
 
 extern int64_t WinID;
 

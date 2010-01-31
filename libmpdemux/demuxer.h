@@ -26,7 +26,7 @@
 
 #include "stream/stream.h"
 #ifdef CONFIG_ASS
-#include "libass/ass_types.h"
+#include "libass/ass_mp.h"
 #endif
 
 #ifdef HAVE_BUILTIN_EXPECT
@@ -142,6 +142,8 @@ typedef struct {
   off_t dpos;                // position in the demuxed stream
   int pack_no;		   // serial number of packet
   int flags;               // flags of current packet (keyframe etc)
+  int non_interleaved;     // 1 if this stream is not properly interleaved,
+                           // so e.g. subtitle handling must do explicit reads.
 //---------------
   int packs;              // number of packets in buffer
   int bytes;              // total bytes of packets in buffer
@@ -239,6 +241,9 @@ typedef struct demuxer_st {
   void* a_streams[MAX_A_STREAMS]; // audio streams (sh_audio_t)
   void* v_streams[MAX_V_STREAMS]; // video sterams (sh_video_t)
   void *s_streams[MAX_S_STREAMS];   // dvd subtitles (flag)
+
+  // pointer to teletext decoder private data, if demuxer stream contains teletext
+  void *teletext;
 
   demux_chapter_t* chapters;
   int num_chapters;
@@ -377,6 +382,7 @@ int ds_get_packet(demux_stream_t *ds,unsigned char **start);
 int ds_get_packet_pts(demux_stream_t *ds, unsigned char **start, double *pts);
 int ds_get_packet_sub(demux_stream_t *ds,unsigned char **start);
 double ds_get_next_pts(demux_stream_t *ds);
+int ds_parse(demux_stream_t *sh, uint8_t **buffer, int *len, double pts, off_t pos);
 
 // This is defined here because demux_stream_t ins't defined in stream.h
 stream_t* new_ds_stream(demux_stream_t *ds);

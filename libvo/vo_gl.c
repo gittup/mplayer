@@ -35,7 +35,6 @@
 #include "gui/interface.h"
 #endif
 #include "fastmemcpy.h"
-#include "libass/ass.h"
 #include "libass/ass_mp.h"
 
 static const vo_info_t info =
@@ -48,15 +47,7 @@ static const vo_info_t info =
 
 const LIBVO_EXTERN(gl)
 
-#ifdef GL_WIN32
-static int gl_vinfo = 0;
-static HGLRC gl_context = 0;
-#define update_xinerama_info w32_update_xinerama_info
-#define vo_init vo_w32_init
-#define vo_window vo_w32_window
-#else
-static XVisualInfo *gl_vinfo = NULL;
-static GLXContext gl_context = 0;
+#ifdef CONFIG_GL_X11
 static int                  wsGLXAttrib[] = { GLX_RGBA,
                                        GLX_RED_SIZE,1,
                                        GLX_GREEN_SIZE,1,
@@ -64,6 +55,7 @@ static int                  wsGLXAttrib[] = { GLX_RGBA,
                                        GLX_DOUBLEBUFFER,
                                        None };
 #endif
+static MPGLContext glctx;
 
 static int use_osd;
 static int scaled_osd;
@@ -97,7 +89,13 @@ static int osd_color;
 
 static int use_aspect;
 static int use_ycbcr;
+#define MASK_ALL_YUV (~(1 << YUV_CONVERSION_NONE))
+#define MASK_NOT_COMBINERS (~((1 << YUV_CONVERSION_NONE) | (1 << YUV_CONVERSION_COMBINERS) | (1 << YUV_CONVERSION_COMBINERS_ATI)))
+#define MASK_GAMMA_SUPPORT (MASK_NOT_COMBINERS & ~(1 << YUV_CONVERSION_FRAGMENT))
 static int use_yuv;
+static int colorspace;
+static int levelconv;
+static int is_yuv;
 static int lscale;
 static int cscale;
 static float filter_strength;
@@ -131,6 +129,7 @@ static char *custom_prog;
 static char *custom_tex;
 static int custom_tlin;
 static int custom_trect;
+static int mipmap_gen;
 
 static int int_pause;
 static int eq_bri = 0;
@@ -156,12 +155,12 @@ static void resize(int x,int y){
   if (WinID >= 0) {
     int top = 0, left = 0, w = x, h = y;
     geometry(&top, &left, &w, &h, vo_screenwidth, vo_screenheight);
-    glViewport(top, left, w, h);
+    Viewport(top, left, w, h);
   } else
-  glViewport( 0, 0, x, y );
+  Viewport( 0, 0, x, y );
 
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
+  MatrixMode(GL_PROJECTION);
+  LoadIdentity();
   ass_border_x = ass_border_y = 0;
   if (aspect_scaling() && use_aspect) {
     int new_w, new_h;
@@ -172,14 +171,14 @@ static void resize(int x,int y){
     new_h += vo_panscan_y;
     scale_x = (GLdouble)new_w / (GLdouble)x;
     scale_y = (GLdouble)new_h / (GLdouble)y;
-    glScaled(scale_x, scale_y, 1);
+    Scaled(scale_x, scale_y, 1);
     ass_border_x = (vo_dwidth - new_w) / 2;
     ass_border_y = (vo_dheight - new_h) / 2;
   }
-  glOrtho(0, image_width, image_height, 0, -1,1);
+  Ortho(0, image_width, image_height, 0, -1,1);
 
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+  MatrixMode(GL_MODELVIEW);
+  LoadIdentity();
 
   if (!scaled_osd) {
 #ifdef CONFIG_FREETYPE
@@ -188,7 +187,7 @@ static void resize(int x,int y){
 #endif
   vo_osd_changed(OSDTYPE_OSD);
   }
-  glClear(GL_COLOR_BUFFER_BIT);
+  Clear(GL_COLOR_BUFFER_BIT);
   redraw();
 }
 
@@ -210,6 +209,7 @@ static void texSize(int w, int h, int *texw, int *texh) {
 //! maximum size of custom fragment program
 #define MAX_CUSTOM_PROG_SIZE (1024 * 1024)
 static void update_yuvconv(void) {
+  int xs, ys;
   float bri = eq_bri / 100.0;
   float cont = (eq_cont + 100) / 100.0;
   float hue = eq_hue / 100.0 * 3.1415927;
@@ -218,8 +218,11 @@ static void update_yuvconv(void) {
   float ggamma = exp(log(8.0) * eq_ggamma / 100.0);
   float bgamma = exp(log(8.0) * eq_bgamma / 100.0);
   gl_conversion_params_t params = {gl_target, yuvconvtype,
-      bri, cont, hue, sat, rgamma, ggamma, bgamma,
-      texture_width, texture_height, filter_strength};
+      {colorspace, levelconv, bri, cont, hue, sat, rgamma, ggamma, bgamma},
+      texture_width, texture_height, 0, 0, filter_strength};
+  mp_get_chroma_shift(image_format, &xs, &ys);
+  params.chrom_texw = params.texw >> xs;
+  params.chrom_texh = params.texh >> ys;
   glSetupYUVConversion(&params);
   if (custom_prog) {
     FILE *f = fopen(custom_prog, "r");
@@ -266,14 +269,14 @@ static void clearOSD(void) {
   int i;
   if (!osdtexCnt)
     return;
-  glDeleteTextures(osdtexCnt, osdtex);
+  DeleteTextures(osdtexCnt, osdtex);
 #ifndef FAST_OSD
-  glDeleteTextures(osdtexCnt, osdatex);
+  DeleteTextures(osdtexCnt, osdatex);
   for (i = 0; i < osdtexCnt; i++)
-    glDeleteLists(osdaDispList[i], 1);
+    DeleteLists(osdaDispList[i], 1);
 #endif
   for (i = 0; i < osdtexCnt; i++)
-    glDeleteLists(osdDispList[i], 1);
+    DeleteLists(osdDispList[i], 1);
   osdtexCnt = 0;
 }
 
@@ -282,16 +285,14 @@ static void clearOSD(void) {
  */
 static void clearEOSD(void) {
   if (eosdDispList)
-    glDeleteLists(eosdDispList, 1);
+    DeleteLists(eosdDispList, 1);
   eosdDispList = 0;
   if (eosdtexCnt)
-    glDeleteTextures(eosdtexCnt, eosdtex);
+    DeleteTextures(eosdtexCnt, eosdtex);
   eosdtexCnt = 0;
   free(eosdtex);
   eosdtex = NULL;
 }
-
-static void do_render_osd(int);
 
 static inline int is_tinytex(ass_image_t *i, int tinytexcur) {
   return i->w < TINYTEX_SIZE && i->h < TINYTEX_SIZE && tinytexcur < TINYTEX_MAX;
@@ -380,15 +381,15 @@ static void genEOSD(mp_eosd_images_t *imgs) {
     glUploadTex(gl_target, GL_ALPHA, GL_UNSIGNED_BYTE, i->bitmap, i->stride,
                 x, y, i->w, i->h, 0);
   }
-  eosdDispList = glGenLists(1);
+  eosdDispList = GenLists(1);
 skip_upload:
-  glNewList(eosdDispList, GL_COMPILE);
+  NewList(eosdDispList, GL_COMPILE);
   tinytexcur = smalltexcur = 0;
   for (i = img, curtex = eosdtex; i; i = i->next) {
     int x = 0, y = 0;
     if (i->w <= 0 || i->h <= 0 || i->stride < i->w)
       continue;
-    glColor4ub(i->color >> 24, (i->color >> 16) & 0xff, (i->color >> 8) & 0xff, 255 - (i->color & 0xff));
+    Color4ub(i->color >> 24, (i->color >> 16) & 0xff, (i->color >> 8) & 0xff, 255 - (i->color & 0xff));
     if (is_tinytex(i, tinytexcur)) {
       tinytex_pos(tinytexcur, &x, &y);
       sx = sy = LARGE_EOSD_TEX_SIZE;
@@ -405,7 +406,7 @@ skip_upload:
     }
     glDrawTex(i->dst_x, i->dst_y, i->w, i->h, x, y, i->w, i->h, sx, sy, use_rectangle == 1, 0, 0);
   }
-  glEndList();
+  EndList();
   BindTexture(gl_target, 0);
 }
 
@@ -420,12 +421,12 @@ static void uninitGl(void) {
   while (default_texs[i] != 0)
     i++;
   if (i)
-    glDeleteTextures(i, default_texs);
+    DeleteTextures(i, default_texs);
   default_texs[0] = 0;
   clearOSD();
   clearEOSD();
   if (largeeosdtex[0])
-    glDeleteTextures(2, largeeosdtex);
+    DeleteTextures(2, largeeosdtex);
   largeeosdtex[0] = 0;
   if (DeleteBuffers && gl_buffer)
     DeleteBuffers(1, &gl_buffer);
@@ -435,7 +436,7 @@ static void uninitGl(void) {
     DeleteBuffers(2, gl_buffer_uv);
   gl_buffer_uv[0] = gl_buffer_uv[1] = 0; gl_buffersize_uv = 0;
   gl_bufferptr_uv[0] = gl_bufferptr_uv[1] = 0;
-#ifdef CONFIG_X11
+#ifdef CONFIG_GL_X11
   if (mesa_bufferptr)
     FreeMemoryMESA(mDisplay, mScreen, mesa_bufferptr);
 #endif
@@ -444,11 +445,12 @@ static void uninitGl(void) {
 }
 
 static void autodetectGlExtensions(void) {
-  const char *extensions = glGetString(GL_EXTENSIONS);
-  const char *vendor     = glGetString(GL_VENDOR);
-  const char *version    = glGetString(GL_VERSION);
+  const char *extensions = GetString(GL_EXTENSIONS);
+  const char *vendor     = GetString(GL_VENDOR);
+  const char *version    = GetString(GL_VERSION);
   int is_ati = strstr(vendor, "ATI") != NULL;
   int ati_broken_pbo = 0;
+  mp_msg(MSGT_VO, MSGL_V, "[gl] Running on OpenGL by '%s', versions '%s'\n", vendor, version);
   if (is_ati && strncmp(version, "2.1.", 4) == 0) {
     int ver = atoi(version + 4);
     mp_msg(MSGT_VO, MSGL_V, "[gl] Detected ATI driver version: %i\n", ver);
@@ -469,23 +471,26 @@ static void autodetectGlExtensions(void) {
  * set global gl-related variables to their default values
  */
 static int initGl(uint32_t d_width, uint32_t d_height) {
+  int scale_type = mipmap_gen ? GL_LINEAR_MIPMAP_NEAREST : GL_LINEAR;
   autodetectGlExtensions();
   texSize(image_width, image_height, &texture_width, &texture_height);
 
-  glDisable(GL_BLEND);
-  glDisable(GL_DEPTH_TEST);
-  glDepthMask(GL_FALSE);
-  glDisable(GL_CULL_FACE);
-  glEnable(gl_target);
-  glDrawBuffer(vo_doublebuffering?GL_BACK:GL_FRONT);
-  glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+  Disable(GL_BLEND);
+  Disable(GL_DEPTH_TEST);
+  DepthMask(GL_FALSE);
+  Disable(GL_CULL_FACE);
+  Enable(gl_target);
+  DrawBuffer(vo_doublebuffering?GL_BACK:GL_FRONT);
+  TexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
   mp_msg(MSGT_VO, MSGL_V, "[gl] Creating %dx%d texture...\n",
           texture_width, texture_height);
 
-  if (image_format == IMGFMT_YV12) {
+  if (is_yuv) {
     int i;
-    glGenTextures(21, default_texs);
+    int xs, ys;
+    mp_get_chroma_shift(image_format, &xs, &ys);
+    GenTextures(21, default_texs);
     default_texs[21] = 0;
     for (i = 0; i < 7; i++) {
       ActiveTexture(GL_TEXTURE1 + i);
@@ -494,34 +499,39 @@ static int initGl(uint32_t d_width, uint32_t d_height) {
       BindTexture(GL_TEXTURE_3D, default_texs[i + 14]);
     }
     ActiveTexture(GL_TEXTURE1);
-    glCreateClearTex(gl_target, gl_texfmt, gl_format, gl_type, GL_LINEAR,
-                     texture_width / 2, texture_height / 2, 128);
+    glCreateClearTex(gl_target, gl_texfmt, gl_format, gl_type, scale_type,
+                     texture_width >> xs, texture_height >> ys, 128);
+    if (mipmap_gen)
+      TexParameteri(gl_target, GL_GENERATE_MIPMAP, GL_TRUE);
     ActiveTexture(GL_TEXTURE2);
-    glCreateClearTex(gl_target, gl_texfmt, gl_format, gl_type, GL_LINEAR,
-                     texture_width / 2, texture_height / 2, 128);
-    switch (use_yuv) {
-      case YUV_CONVERSION_FRAGMENT_LOOKUP:
-      case YUV_CONVERSION_FRAGMENT_POW:
-      case YUV_CONVERSION_FRAGMENT:
-        if (!GenPrograms || !BindProgram) {
-          mp_msg(MSGT_VO, MSGL_ERR, "[gl] fragment program functions missing!\n");
-          break;
-        }
-        GenPrograms(1, &fragprog);
-        BindProgram(GL_FRAGMENT_PROGRAM, fragprog);
-        break;
-    }
+    glCreateClearTex(gl_target, gl_texfmt, gl_format, gl_type, scale_type,
+                     texture_width >> xs, texture_height >> ys, 128);
+    if (mipmap_gen)
+      TexParameteri(gl_target, GL_GENERATE_MIPMAP, GL_TRUE);
     ActiveTexture(GL_TEXTURE0);
     BindTexture(gl_target, 0);
+  }
+  if (is_yuv || custom_prog)
+  {
+    if ((MASK_NOT_COMBINERS & (1 << use_yuv)) || custom_prog) {
+      if (!GenPrograms || !BindProgram) {
+        mp_msg(MSGT_VO, MSGL_ERR, "[gl] fragment program functions missing!\n");
+      } else {
+        GenPrograms(1, &fragprog);
+        BindProgram(GL_FRAGMENT_PROGRAM, fragprog);
+      }
+    }
     update_yuvconv();
   }
-  glCreateClearTex(gl_target, gl_texfmt, gl_format, gl_type, GL_LINEAR,
+  glCreateClearTex(gl_target, gl_texfmt, gl_format, gl_type, scale_type,
                    texture_width, texture_height, 0);
+  if (mipmap_gen)
+    TexParameteri(gl_target, GL_GENERATE_MIPMAP, GL_TRUE);
 
   resize(d_width, d_height);
 
-  glClearColor( 0.0f,0.0f,0.0f,0.0f );
-  glClear( GL_COLOR_BUFFER_BIT );
+  ClearColor( 0.0f,0.0f,0.0f,0.0f );
+  Clear( GL_COLOR_BUFFER_BIT );
   if (SwapInterval && swap_interval >= 0)
     SwapInterval(swap_interval);
   return 1;
@@ -533,9 +543,12 @@ static int initGl(uint32_t d_width, uint32_t d_height) {
 static int
 config(uint32_t width, uint32_t height, uint32_t d_width, uint32_t d_height, uint32_t flags, char *title, uint32_t format)
 {
+  int xs, ys;
   image_height = height;
   image_width = width;
   image_format = format;
+  is_yuv = mp_get_chroma_shift(image_format, &xs, &ys) > 0;
+  is_yuv |= (xs << 8) | (ys << 16);
   glFindFormat(format, NULL, &gl_texfmt, &gl_format, &gl_type);
 
   int_pause = 0;
@@ -548,17 +561,19 @@ config(uint32_t width, uint32_t height, uint32_t d_width, uint32_t d_height, uin
     goto glconfig;
   }
 #endif
-#ifdef GL_WIN32
-  if (!vo_w32_config(d_width, d_height, flags))
+#ifdef CONFIG_GL_WIN32
+  if (glctx.type == GLTYPE_W32 && !vo_w32_config(d_width, d_height, flags))
     return -1;
-#else
-  {
+#endif
+#ifdef CONFIG_GL_X11
+  if (glctx.type == GLTYPE_X11) {
     XVisualInfo *vinfo=glXChooseVisual( mDisplay,mScreen,wsGLXAttrib );
     if (vinfo == NULL)
     {
       mp_msg(MSGT_VO, MSGL_ERR, "[gl] no GLX support present\n");
       return -1;
     }
+    mp_msg(MSGT_VO, MSGL_V, "[gl] GLX chose visual with ID 0x%x\n", (int)vinfo->visualid);
 
     vo_x11_create_vo_window(vinfo, vo_dx, vo_dy, d_width, d_height, flags,
             XCreateColormap(mDisplay, mRootWin, vinfo->visual, AllocNone),
@@ -569,7 +584,7 @@ config(uint32_t width, uint32_t height, uint32_t d_width, uint32_t d_height, uin
 glconfig:
   if (vo_config_count)
     uninitGl();
-  if (setGlWindow(&gl_vinfo, &gl_context, vo_window) == SET_WINDOW_FAILED)
+  if (glctx.setGlWindow(&glctx) == SET_WINDOW_FAILED)
     return -1;
   if (mesa_buffer && !AllocateMemoryMESA) {
     mp_msg(MSGT_VO, MSGL_ERR, "Can not enable mesa-buffer because AllocateMemoryMESA was not found\n");
@@ -582,7 +597,7 @@ glconfig:
 
 static void check_events(void)
 {
-    int e=vo_check_events();
+    int e=glctx.check_events();
     if(e&VO_EVENT_RESIZE) resize(vo_dwidth,vo_dheight);
     if(e&VO_EVENT_EXPOSE && int_pause) redraw();
 }
@@ -612,14 +627,14 @@ static void create_osd_texture(int x0, int y0, int w, int h,
   }
 
   // create Textures for OSD part
-  glGenTextures(1, &osdtex[osdtexCnt]);
+  GenTextures(1, &osdtex[osdtexCnt]);
   BindTexture(gl_target, osdtex[osdtexCnt]);
   glCreateClearTex(gl_target, GL_LUMINANCE, GL_LUMINANCE, GL_UNSIGNED_BYTE, scale_type, sx, sy, 0);
   glUploadTex(gl_target, GL_LUMINANCE, GL_UNSIGNED_BYTE, src, stride,
               0, 0, w, h, 0);
 
 #ifndef FAST_OSD
-  glGenTextures(1, &osdatex[osdtexCnt]);
+  GenTextures(1, &osdatex[osdtexCnt]);
   BindTexture(gl_target, osdatex[osdtexCnt]);
   glCreateClearTex(gl_target, GL_ALPHA, GL_ALPHA, GL_UNSIGNED_BYTE, scale_type, sx, sy, 0);
   {
@@ -639,21 +654,56 @@ static void create_osd_texture(int x0, int y0, int w, int h,
 
   // Create a list for rendering this OSD part
 #ifndef FAST_OSD
-  osdaDispList[osdtexCnt] = glGenLists(1);
-  glNewList(osdaDispList[osdtexCnt], GL_COMPILE);
+  osdaDispList[osdtexCnt] = GenLists(1);
+  NewList(osdaDispList[osdtexCnt], GL_COMPILE);
   // render alpha
   BindTexture(gl_target, osdatex[osdtexCnt]);
   glDrawTex(x0, y0, w, h, 0, 0, w, h, sx, sy, use_rectangle == 1, 0, 0);
-  glEndList();
+  EndList();
 #endif
-  osdDispList[osdtexCnt] = glGenLists(1);
-  glNewList(osdDispList[osdtexCnt], GL_COMPILE);
+  osdDispList[osdtexCnt] = GenLists(1);
+  NewList(osdDispList[osdtexCnt], GL_COMPILE);
   // render OSD
   BindTexture(gl_target, osdtex[osdtexCnt]);
   glDrawTex(x0, y0, w, h, 0, 0, w, h, sx, sy, use_rectangle == 1, 0, 0);
-  glEndList();
+  EndList();
 
   osdtexCnt++;
+}
+
+/**
+ * \param type bit 0: render OSD, bit 1: render EOSD
+ */
+static void do_render_osd(int type) {
+  if (((type & 1) && osdtexCnt > 0) || ((type & 2) && eosdDispList)) {
+    // set special rendering parameters
+    if (!scaled_osd) {
+      MatrixMode(GL_PROJECTION);
+      PushMatrix();
+      LoadIdentity();
+      Ortho(0, vo_dwidth, vo_dheight, 0, -1, 1);
+    }
+    Enable(GL_BLEND);
+    if ((type & 2) && eosdDispList) {
+      BlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+      CallList(eosdDispList);
+    }
+    if ((type & 1) && osdtexCnt > 0) {
+      Color4ub((osd_color >> 16) & 0xff, (osd_color >> 8) & 0xff, osd_color & 0xff, 0xff - (osd_color >> 24));
+      // draw OSD
+#ifndef FAST_OSD
+      BlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
+      CallLists(osdtexCnt, GL_UNSIGNED_INT, osdaDispList);
+#endif
+      BlendFunc(GL_SRC_ALPHA, GL_ONE);
+      CallLists(osdtexCnt, GL_UNSIGNED_INT, osdDispList);
+    }
+    // set rendering parameters back to defaults
+    Disable(GL_BLEND);
+    if (!scaled_osd)
+      PopMatrix();
+    BindTexture(gl_target, 0);
+  }
 }
 
 static void draw_osd(void)
@@ -671,67 +721,32 @@ static void draw_osd(void)
 }
 
 static void do_render(void) {
-//  glEnable(GL_TEXTURE_2D);
-//  glBindTexture(GL_TEXTURE_2D, texture_id);
+//  Enable(GL_TEXTURE_2D);
+//  BindTexture(GL_TEXTURE_2D, texture_id);
 
-  glColor3f(1,1,1);
-  if (image_format == IMGFMT_YV12)
+  Color3f(1,1,1);
+  if (is_yuv || custom_prog)
     glEnableYUVConversion(gl_target, yuvconvtype);
   glDrawTex(0, 0, image_width, image_height,
             0, 0, image_width, image_height,
             texture_width, texture_height,
-            use_rectangle == 1, image_format == IMGFMT_YV12,
+            use_rectangle == 1, is_yuv,
             mpi_flipped ^ vo_flipped);
-  if (image_format == IMGFMT_YV12)
+  if (is_yuv || custom_prog)
     glDisableYUVConversion(gl_target, yuvconvtype);
-}
-
-/**
- * \param type bit 0: render OSD, bit 1: render EOSD
- */
-static void do_render_osd(int type) {
-  if (((type & 1) && osdtexCnt > 0) || ((type & 2) && eosdDispList)) {
-    // set special rendering parameters
-    if (!scaled_osd) {
-      glMatrixMode(GL_PROJECTION);
-      glPushMatrix();
-      glLoadIdentity();
-      glOrtho(0, vo_dwidth, vo_dheight, 0, -1, 1);
-    }
-    glEnable(GL_BLEND);
-    if ((type & 2) && eosdDispList) {
-      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-      glCallList(eosdDispList);
-    }
-    if ((type & 1) && osdtexCnt > 0) {
-      glColor4ub((osd_color >> 16) & 0xff, (osd_color >> 8) & 0xff, osd_color & 0xff, 0xff - (osd_color >> 24));
-      // draw OSD
-#ifndef FAST_OSD
-      glBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
-      glCallLists(osdtexCnt, GL_UNSIGNED_INT, osdaDispList);
-#endif
-      glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-      glCallLists(osdtexCnt, GL_UNSIGNED_INT, osdDispList);
-    }
-    // set rendering parameters back to defaults
-    glDisable(GL_BLEND);
-    if (!scaled_osd)
-      glPopMatrix();
-    BindTexture(gl_target, 0);
-  }
 }
 
 static void flip_page(void) {
   if (vo_doublebuffering) {
-    if (use_glFinish) glFinish();
-    swapGlBuffers();
+    if (use_glFinish) Finish();
+    glctx.swapGlBuffers(&glctx);
     if (aspect_scaling() && use_aspect)
-      glClear(GL_COLOR_BUFFER_BIT);
+      Clear(GL_COLOR_BUFFER_BIT);
   } else {
     do_render();
     do_render_osd(3);
-    if (use_glFinish) glFinish();
-    else glFlush();
+    if (use_glFinish) Finish();
+    else Flush();
   }
 }
 
@@ -746,13 +761,15 @@ static int draw_slice(uint8_t *src[], int stride[], int w,int h,int x,int y)
   mpi_flipped = stride[0] < 0;
   glUploadTex(gl_target, gl_format, gl_type, src[0], stride[0],
               x, y, w, h, slice_height);
-  if (image_format == IMGFMT_YV12) {
+  if (is_yuv) {
+    int xs, ys;
+    mp_get_chroma_shift(image_format, &xs, &ys);
     ActiveTexture(GL_TEXTURE1);
     glUploadTex(gl_target, gl_format, gl_type, src[1], stride[1],
-                x / 2, y / 2, w / 2, h / 2, slice_height);
+                x >> xs, y >> ys, w >> xs, h >> ys, slice_height);
     ActiveTexture(GL_TEXTURE2);
     glUploadTex(gl_target, gl_format, gl_type, src[2], stride[2],
-                x / 2, y / 2, w / 2, h / 2, slice_height);
+                x >> xs, y >> ys, w >> xs, h >> ys, slice_height);
     ActiveTexture(GL_TEXTURE0);
   }
   return 0;
@@ -779,7 +796,7 @@ static uint32_t get_image(mp_image_t *mpi) {
   mpi->stride[0] = mpi->width * mpi->bpp / 8;
   needed_size = mpi->stride[0] * mpi->height;
   if (mesa_buffer) {
-#ifdef CONFIG_X11
+#ifdef CONFIG_GL_X11
     if (mesa_bufferptr && needed_size > mesa_buffersize) {
       FreeMemoryMESA(mDisplay, mScreen, mesa_bufferptr);
       mesa_bufferptr = NULL;
@@ -810,14 +827,16 @@ static uint32_t get_image(mp_image_t *mpi) {
     err_shown = 1;
     return VO_FALSE;
   }
-  if (mpi->imgfmt == IMGFMT_YV12) {
-    // YV12
+  if (is_yuv) {
+    // planar YUV
+    int xs, ys;
+    mp_get_chroma_shift(image_format, &xs, &ys);
     mpi->flags |= MP_IMGFLAG_COMMON_STRIDE | MP_IMGFLAG_COMMON_PLANE;
     mpi->stride[0] = mpi->width;
     mpi->planes[1] = mpi->planes[0] + mpi->stride[0] * mpi->height;
-    mpi->stride[1] = mpi->width >> 1;
-    mpi->planes[2] = mpi->planes[1] + mpi->stride[1] * (mpi->height >> 1);
-    mpi->stride[2] = mpi->width >> 1;
+    mpi->stride[1] = mpi->width >> xs;
+    mpi->planes[2] = mpi->planes[1] + mpi->stride[1] * (mpi->height >> ys);
+    mpi->stride[2] = mpi->width >> xs;
     if (ati_hack && !mesa_buffer) {
       mpi->flags &= ~MP_IMGFLAG_COMMON_PLANE;
       if (!gl_buffer_uv[0]) GenBuffers(2, gl_buffer_uv);
@@ -867,17 +886,19 @@ static uint32_t draw_image(mp_image_t *mpi) {
   mpi2.flags = 0; mpi2.type = MP_IMGTYPE_TEMP;
   mpi2.width = mpi2.w; mpi2.height = mpi2.h;
   if (force_pbo && !(mpi->flags & MP_IMGFLAG_DIRECT) && !gl_bufferptr && get_image(&mpi2) == VO_TRUE) {
-    int bpp = mpi->imgfmt == IMGFMT_YV12 ? 8 : mpi->bpp;
+    int bpp = is_yuv ? 8 : mpi->bpp;
+    int xs, ys;
+    mp_get_chroma_shift(image_format, &xs, &ys);
     memcpy_pic(mpi2.planes[0], mpi->planes[0], mpi->w * bpp / 8, mpi->h, mpi2.stride[0], mpi->stride[0]);
-    if (mpi->imgfmt == IMGFMT_YV12) {
-      memcpy_pic(mpi2.planes[1], mpi->planes[1], mpi->w >> 1, mpi->h >> 1, mpi2.stride[1], mpi->stride[1]);
-      memcpy_pic(mpi2.planes[2], mpi->planes[2], mpi->w >> 1, mpi->h >> 1, mpi2.stride[2], mpi->stride[2]);
+    if (is_yuv) {
+      memcpy_pic(mpi2.planes[1], mpi->planes[1], mpi->w >> xs, mpi->h >> ys, mpi2.stride[1], mpi->stride[1]);
+      memcpy_pic(mpi2.planes[2], mpi->planes[2], mpi->w >> xs, mpi->h >> ys, mpi2.stride[2], mpi->stride[2]);
     }
     if (ati_hack) { // since we have to do a full upload we need to clear the borders
       clear_border(mpi2.planes[0], mpi->w * bpp / 8, mpi2.stride[0], mpi->h, mpi2.height, 0);
-      if (mpi->imgfmt == IMGFMT_YV12) {
-        clear_border(mpi2.planes[1], mpi->w >> 1, mpi2.stride[1], mpi->h >> 1, mpi2.height >> 1, 128);
-        clear_border(mpi2.planes[2], mpi->w >> 1, mpi2.stride[2], mpi->h >> 1, mpi2.height >> 1, 128);
+      if (is_yuv) {
+        clear_border(mpi2.planes[1], mpi->w >> xs, mpi2.stride[1], mpi->h >> ys, mpi2.height >> ys, 128);
+        clear_border(mpi2.planes[2], mpi->w >> xs, mpi2.stride[2], mpi->h >> ys, mpi2.height >> ys, 128);
       }
     }
     mpi = &mpi2;
@@ -887,7 +908,7 @@ static uint32_t draw_image(mp_image_t *mpi) {
   mpi_flipped = stride[0] < 0;
   if (mpi->flags & MP_IMGFLAG_DIRECT) {
     if (mesa_buffer) {
-      glPixelStorei(GL_UNPACK_CLIENT_STORAGE_APPLE, 1);
+      PixelStorei(GL_UNPACK_CLIENT_STORAGE_APPLE, 1);
       w = texture_width;
     } else {
       intptr_t base = (intptr_t)planes[0];
@@ -907,7 +928,9 @@ static uint32_t draw_image(mp_image_t *mpi) {
   }
   glUploadTex(gl_target, gl_format, gl_type, planes[0], stride[0],
               mpi->x, mpi->y, w, h, slice);
-  if (mpi->imgfmt == IMGFMT_YV12) {
+  if (is_yuv) {
+    int xs, ys;
+    mp_get_chroma_shift(image_format, &xs, &ys);
     if ((mpi->flags & MP_IMGFLAG_DIRECT) && !(mpi->flags & MP_IMGFLAG_COMMON_PLANE)) {
       BindBuffer(GL_PIXEL_UNPACK_BUFFER, gl_buffer_uv[0]);
       UnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
@@ -915,7 +938,7 @@ static uint32_t draw_image(mp_image_t *mpi) {
     }
     ActiveTexture(GL_TEXTURE1);
     glUploadTex(gl_target, gl_format, gl_type, planes[1], stride[1],
-                mpi->x / 2, mpi->y / 2, w / 2, h / 2, slice);
+                mpi->x >> xs, mpi->y >> ys, w >> xs, h >> ys, slice);
     if ((mpi->flags & MP_IMGFLAG_DIRECT) && !(mpi->flags & MP_IMGFLAG_COMMON_PLANE)) {
       BindBuffer(GL_PIXEL_UNPACK_BUFFER, gl_buffer_uv[1]);
       UnmapBuffer(GL_PIXEL_UNPACK_BUFFER);
@@ -923,11 +946,11 @@ static uint32_t draw_image(mp_image_t *mpi) {
     }
     ActiveTexture(GL_TEXTURE2);
     glUploadTex(gl_target, gl_format, gl_type, planes[2], stride[2],
-                mpi->x / 2, mpi->y / 2, w / 2, h / 2, slice);
+                mpi->x >> xs, mpi->y >> ys, w >> xs, h >> ys, slice);
     ActiveTexture(GL_TEXTURE0);
   }
   if (mpi->flags & MP_IMGFLAG_DIRECT) {
-    if (mesa_buffer) glPixelStorei(GL_UNPACK_CLIENT_STORAGE_APPLE, 0);
+    if (mesa_buffer) PixelStorei(GL_UNPACK_CLIENT_STORAGE_APPLE, 0);
     else BindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
   }
 skip_upload:
@@ -951,7 +974,8 @@ query_format(uint32_t format)
       caps |= VFCAP_OSD | VFCAP_EOSD | (scaled_osd ? 0 : VFCAP_EOSD_UNSCALED);
     if (format == IMGFMT_RGB24 || format == IMGFMT_RGBA)
         return caps;
-    if (use_yuv && format == IMGFMT_YV12)
+    if (use_yuv && mp_get_chroma_shift(format, NULL, NULL) &&
+        (IMGFMT_IS_YUVP16_NE(format) || !IMGFMT_IS_YUVP16(format)))
         return caps;
     // HACK, otherwise we get only b&w with some filters (e.g. -vf eq)
     // ideally MPlayer should be fixed instead not to use Y800 when it has the choice
@@ -971,12 +995,23 @@ uninit(void)
 {
   if (!vo_config_count) return;
   uninitGl();
-  releaseGlContext(&gl_vinfo, &gl_context);
   if (custom_prog) free(custom_prog);
   custom_prog = NULL;
   if (custom_tex) free(custom_tex);
   custom_tex = NULL;
-  vo_uninit();
+  uninit_mpglcontext(&glctx);
+}
+
+static int valid_csp(void *p)
+{
+  int *csp = p;
+  return *csp >= -1 && *csp < MP_CSP_COUNT;
+}
+
+static int valid_csp_lvl(void *p)
+{
+  int *lvl = p;
+  return *lvl >= -1 && *lvl < MP_CSP_LEVELCONV_COUNT;
 }
 
 static const opt_t subopts[] = {
@@ -985,11 +1020,13 @@ static const opt_t subopts[] = {
   {"scaled-osd",   OPT_ARG_BOOL, &scaled_osd,   NULL},
   {"aspect",       OPT_ARG_BOOL, &use_aspect,   NULL},
   {"ycbcr",        OPT_ARG_BOOL, &use_ycbcr,    NULL},
-  {"slice-height", OPT_ARG_INT,  &slice_height, (opt_test_f)int_non_neg},
-  {"rectangle",    OPT_ARG_INT,  &use_rectangle,(opt_test_f)int_non_neg},
-  {"yuv",          OPT_ARG_INT,  &use_yuv,      (opt_test_f)int_non_neg},
-  {"lscale",       OPT_ARG_INT,  &lscale,       (opt_test_f)int_non_neg},
-  {"cscale",       OPT_ARG_INT,  &cscale,       (opt_test_f)int_non_neg},
+  {"slice-height", OPT_ARG_INT,  &slice_height, int_non_neg},
+  {"rectangle",    OPT_ARG_INT,  &use_rectangle,int_non_neg},
+  {"yuv",          OPT_ARG_INT,  &use_yuv,      int_non_neg},
+  {"colorspace",   OPT_ARG_INT,  &colorspace,   valid_csp},
+  {"levelconv",    OPT_ARG_INT,  &levelconv,    valid_csp_lvl},
+  {"lscale",       OPT_ARG_INT,  &lscale,       int_non_neg},
+  {"cscale",       OPT_ARG_INT,  &cscale,       int_non_neg},
   {"filter-strength", OPT_ARG_FLOAT, &filter_strength, NULL},
   {"ati-hack",     OPT_ARG_BOOL, &ati_hack,     NULL},
   {"force-pbo",    OPT_ARG_BOOL, &force_pbo,    NULL},
@@ -1000,19 +1037,26 @@ static const opt_t subopts[] = {
   {"customtex",    OPT_ARG_MSTRZ,&custom_tex,   NULL},
   {"customtlin",   OPT_ARG_BOOL, &custom_tlin,  NULL},
   {"customtrect",  OPT_ARG_BOOL, &custom_trect, NULL},
+  {"mipmapgen",    OPT_ARG_BOOL, &mipmap_gen,   NULL},
   {"osdcolor",     OPT_ARG_INT,  &osd_color,    NULL},
   {NULL}
 };
 
 static int preinit(const char *arg)
 {
+    enum MPGLType gltype = GLTYPE_X11;
     // set defaults
+#ifdef CONFIG_GL_WIN32
+    gltype = GLTYPE_W32;
+#endif
     many_fmts = 1;
     use_osd = 1;
     scaled_osd = 0;
     use_aspect = 1;
     use_ycbcr = 0;
     use_yuv = 0;
+    colorspace = -1;
+    levelconv = -1;
     lscale = 0;
     cscale = 0;
     filter_strength = 0.5;
@@ -1027,6 +1071,7 @@ static int preinit(const char *arg)
     custom_tex = NULL;
     custom_tlin = 1;
     custom_trect = 0;
+    mipmap_gen = 0;
     osd_color = 0xffffff;
     if (subopt_parse(arg, subopts) != 0) {
       mp_msg(MSGT_VO, MSGL_FATAL,
@@ -1057,6 +1102,8 @@ static int preinit(const char *arg)
               "    Interval in displayed frames between to buffer swaps.\n"
               "    1 is equivalent to enable VSYNC, 0 to disable VSYNC.\n"
               "    Requires GLX_SGI_swap_control support to work.\n"
+              "  ycbcr\n"
+              "    also try to use the GL_MESA_ycbcr_texture extension\n"
               "  yuv=<n>\n"
               "    0: use software YUV to RGB conversion.\n"
               "    1: use register combiners (nVidia only, for older cards).\n"
@@ -1065,6 +1112,17 @@ static int preinit(const char *arg)
               "    4: use fragment program with gamma correction via lookup.\n"
               "    5: use ATI-specific method (for older cards).\n"
               "    6: use lookup via 3D texture.\n"
+	      "  colorspace=<n>\n"
+              "    0: MPlayer's default YUV to RGB conversion\n"
+              "    1: YUV to RGB according to BT.601\n"
+              "    2: YUV to RGB according to BT.709\n"
+              "    3: YUV to RGB according to SMPT-240M\n"
+              "    4: YUV to RGB according to EBU\n"
+              "    5: XYZ to RGB\n"
+              "  levelconv=<n>\n"
+              "    0: YUV to RGB converting TV to PC levels\n"
+              "    1: YUV to RGB converting PC to TV levels\n"
+              "    2: YUV to RGB without converting levels\n"
               "  lscale=<n>\n"
               "    0: use standard bilinear scaling for luma.\n"
               "    1: use improved bicubic scaling for luma.\n"
@@ -1084,10 +1142,10 @@ static int preinit(const char *arg)
               "    use GL_NEAREST scaling for customtex texture\n"
               "  customtrect\n"
               "    use texture_rectangle for customtex texture\n"
+              "  mipmapgen\n"
+              "    generate mipmaps for the video image (use with TXB in customprog)\n"
               "  osdcolor=<0xAARRGGBB>\n"
               "    use the given color for the OSD\n"
-              "  ycbcr\n"
-              "    also try to use the GL_MESA_ycbcr_texture extension\n"
               "\n" );
       return -1;
     }
@@ -1101,14 +1159,10 @@ static int preinit(const char *arg)
                "Use -vo gl:nomanyfmts if playback fails.\n");
     mp_msg(MSGT_VO, MSGL_V, "[gl] Using %d as slice height "
              "(0 means image height).\n", slice_height);
-    if (!vo_init()) return -1; // Can't open X11
+    if (!init_mpglcontext(&glctx, gltype)) return -1;
 
     return 0;
 }
-
-#define MASK_ALL_YUV (~(1 << YUV_CONVERSION_NONE))
-#define MASK_NOT_COMBINERS (~((1 << YUV_CONVERSION_NONE) | (1 << YUV_CONVERSION_COMBINERS) | (1 << YUV_CONVERSION_COMBINERS_ATI)))
-#define MASK_GAMMA_SUPPORT (MASK_NOT_COMBINERS & ~(1 << YUV_CONVERSION_FRAGMENT))
 
 static const struct {
   const char *name;
@@ -1149,6 +1203,7 @@ static int control(uint32_t request, void *data, ...)
     {
       mp_eosd_res_t *r = data;
       r->w = vo_dwidth; r->h = vo_dheight;
+      r->srcw = image_width; r->srch = image_height;
       r->mt = r->mb = r->ml = r->mr = 0;
       if (scaled_osd) {r->w = image_width; r->h = image_height;}
       else if (aspect_scaling()) {
@@ -1160,14 +1215,14 @@ static int control(uint32_t request, void *data, ...)
   case VOCTRL_GUISUPPORT:
     return VO_TRUE;
   case VOCTRL_ONTOP:
-    vo_ontop();
+    glctx.ontop();
     return VO_TRUE;
   case VOCTRL_FULLSCREEN:
-    vo_fullscreen();
+    glctx.fullscreen();
     resize(vo_dwidth, vo_dheight);
     return VO_TRUE;
   case VOCTRL_BORDER:
-    vo_border();
+    glctx.border();
     resize(vo_dwidth, vo_dheight);
     return VO_TRUE;
   case VOCTRL_GET_PANSCAN:
@@ -1178,7 +1233,7 @@ static int control(uint32_t request, void *data, ...)
     resize(vo_dwidth, vo_dheight);
     return VO_TRUE;
   case VOCTRL_GET_EQUALIZER:
-    if (image_format == IMGFMT_YV12) {
+    if (is_yuv) {
       int i;
       va_list va;
       int *value;
@@ -1194,7 +1249,7 @@ static int control(uint32_t request, void *data, ...)
     }
     break;
   case VOCTRL_SET_EQUALIZER:
-    if (image_format == IMGFMT_YV12) {
+    if (is_yuv) {
       int i;
       va_list va;
       int value;
@@ -1211,7 +1266,7 @@ static int control(uint32_t request, void *data, ...)
     }
     break;
   case VOCTRL_UPDATE_SCREENINFO:
-    update_xinerama_info();
+    glctx.update_xinerama_info();
     return VO_TRUE;
   }
   return VO_NOTIMPL;
