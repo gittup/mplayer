@@ -54,15 +54,15 @@ SRCS_COMMON-@(DVDNAV_INTERNAL)       += libdvdnav/dvdnav.c \
 
 SRCS_COMMON-@(DVDREAD)               += stream/stream_dvd.c \
                                         stream/stream_dvd_common.c
-SRCS_COMMON-@(DVDREAD_INTERNAL)      += libdvdread4/bitreader.c \
-                                        libdvdread4/dvd_input.c \
-                                        libdvdread4/dvd_reader.c \
-                                        libdvdread4/dvd_udf.c \
-                                        libdvdread4/ifo_print.c \
-                                        libdvdread4/ifo_read.c \
-                                        libdvdread4/md5.c \
-                                        libdvdread4/nav_print.c \
-                                        libdvdread4/nav_read.c \
+SRCS_COMMON-@(DVDREAD_INTERNAL)      += ../libdvdread/bitreader.c \
+                                        ../libdvdread/dvd_input.c \
+                                        ../libdvdread/dvd_reader.c \
+                                        ../libdvdread/dvd_udf.c \
+                                        ../libdvdread/ifo_print.c \
+                                        ../libdvdread/ifo_read.c \
+                                        ../libdvdread/md5.c \
+                                        ../libdvdread/nav_print.c \
+                                        ../libdvdread/nav_read.c \
 
 SRCS_COMMON-@(FAAD)                  += libmpcodecs/ad_faad.c
 SRCS_COMMON-@(FAAD_INTERNAL)         += libfaad2/bits.c \
@@ -787,6 +787,9 @@ DRIVER_objs = $(KERNEL_objs) drivers/mga_vid_test drivers/tdfx_vid_test
 # Do not include dependencies when they are about to be removed anyway.
 
 CFLAGS += -I$(GITTUP_ROOT)/alsa-lib
+CFLAGS += -I$(GITTUP_ROOT)/libdvdread
+CFLAGS += -Ilibdvdcss
+CFLAGS_libdvdcss/libdvdcss.c += -DVERSION='"git"'
 headers += $(GITTUP_ROOT)/alsa-lib/include/asoundlib.h
 
 libs += $(GITTUP_ROOT)/libavformat/libavformat.a
