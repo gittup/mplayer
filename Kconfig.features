@@ -326,8 +326,8 @@ config VCD
 	bool "VCD"
 	default n
 config VDPAU
-	bool "VDPAU"
-	default n
+	int "VDPAU"
+	default "0"
 config VESA
 	bool "VESA"
 	default n
@@ -422,8 +422,8 @@ config XVIDIX
 	bool "XVIDIX"
 	default n
 config XVMC
-	bool "XVMC"
-	default n
+	int "XVMC"
+	default "0"
 config XVR100
 	bool "XVR100"
 	default n
@@ -492,29 +492,29 @@ config LIBSWSCALE_A
 	default y
 
 config FILE_PROTOCOL
-	bool "FILE_PROTOCOL"
-	default n
+	int "FILE_PROTOCOL"
+	default "0"
 config GOPHER_PROTOCOL
-	bool "GOPHER_PROTOCOL"
-	default n
+	int "GOPHER_PROTOCOL"
+	default "0"
 config HTTP_PROTOCOL
-	bool "HTTP_PROTOCOL"
-	default n
+	int "HTTP_PROTOCOL"
+	default "0"
 config PIPE_PROTOCOL
-	bool "PIPE_PROTOCOL"
-	default n
+	int "PIPE_PROTOCOL"
+	default "0"
 config RTMP_PROTOCOL
-	bool "RTMP_PROTOCOL"
-	default n
+	int "RTMP_PROTOCOL"
+	default "0"
 config RTP_PROTOCOL
-	bool "RTP_PROTOCOL"
-	default n
+	int "RTP_PROTOCOL"
+	default "0"
 config TCP_PROTOCOL
-	bool "TCP_PROTOCOL"
-	default n
+	int "TCP_PROTOCOL"
+	default "0"
 config UDP_PROTOCOL
-	bool "UDP_PROTOCOL"
-	default n
+	int "UDP_PROTOCOL"
+	default "0"
 config HAVE_MMX
 	bool "HAVE_MMX"
 	default y
@@ -534,5 +534,5 @@ config GPL
 	bool "GPL"
 	default y
 config H264_DXVA2_HWACCEL
-	bool "H264_DXVA2_HWACCEL"
-	default n
+	int "H264_DXVA2_HWACCEL"
+	default "0"

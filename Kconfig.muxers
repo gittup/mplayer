@@ -1,271 +1,271 @@
 config AC3_MUXER
-	bool "AC3_MUXER"
-	default y
+	int "AC3_MUXER"
+	default "1"
 config ADTS_MUXER
-	bool "ADTS_MUXER"
-	default y
+	int "ADTS_MUXER"
+	default "1"
 config AIFF_MUXER
-	bool "AIFF_MUXER"
-	default y
+	int "AIFF_MUXER"
+	default "1"
 config AMR_MUXER
-	bool "AMR_MUXER"
-	default y
+	int "AMR_MUXER"
+	default "1"
 config ASF_MUXER
-	bool "ASF_MUXER"
-	default y
+	int "ASF_MUXER"
+	default "1"
 config ASS_MUXER
-	bool "ASS_MUXER"
-	default y
+	int "ASS_MUXER"
+	default "1"
 config ASF_STREAM_MUXER
-	bool "ASF_STREAM_MUXER"
-	default y
+	int "ASF_STREAM_MUXER"
+	default "1"
 config AU_MUXER
-	bool "AU_MUXER"
-	default y
+	int "AU_MUXER"
+	default "1"
 config AVI_MUXER
-	bool "AVI_MUXER"
-	default y
+	int "AVI_MUXER"
+	default "1"
 config AVM2_MUXER
-	bool "AVM2_MUXER"
-	default y
+	int "AVM2_MUXER"
+	default "1"
 config CRC_MUXER
-	bool "CRC_MUXER"
-	default y
+	int "CRC_MUXER"
+	default "1"
 config DAUD_MUXER
-	bool "DAUD_MUXER"
-	default y
+	int "DAUD_MUXER"
+	default "1"
 config DIRAC_MUXER
-	bool "DIRAC_MUXER"
-	default y
+	int "DIRAC_MUXER"
+	default "1"
 config DNXHD_MUXER
-	bool "DNXHD_MUXER"
-	default y
+	int "DNXHD_MUXER"
+	default "1"
 config DTS_MUXER
-	bool "DTS_MUXER"
-	default y
+	int "DTS_MUXER"
+	default "1"
 config DV_MUXER
-	bool "DV_MUXER"
-	default y
+	int "DV_MUXER"
+	default "1"
 config EAC3_MUXER
-	bool "EAC3_MUXER"
-	default y
+	int "EAC3_MUXER"
+	default "1"
 config FFM_MUXER
-	bool "FFM_MUXER"
-	default y
+	int "FFM_MUXER"
+	default "1"
 config FLAC_MUXER
-	bool "FLAC_MUXER"
-	default y
+	int "FLAC_MUXER"
+	default "1"
 config FLV_MUXER
-	bool "FLV_MUXER"
-	default y
+	int "FLV_MUXER"
+	default "1"
 config FRAMECRC_MUXER
-	bool "FRAMECRC_MUXER"
-	default y
+	int "FRAMECRC_MUXER"
+	default "1"
 config GIF_MUXER
-	bool "GIF_MUXER"
-	default y
+	int "GIF_MUXER"
+	default "1"
 config GXF_MUXER
-	bool "GXF_MUXER"
-	default y
+	int "GXF_MUXER"
+	default "1"
 config H261_MUXER
-	bool "H261_MUXER"
-	default y
+	int "H261_MUXER"
+	default "1"
 config H263_MUXER
-	bool "H263_MUXER"
-	default y
+	int "H263_MUXER"
+	default "1"
 config H264_MUXER
-	bool "H264_MUXER"
-	default y
+	int "H264_MUXER"
+	default "1"
 config IMAGE2_MUXER
-	bool "IMAGE2_MUXER"
-	default y
+	int "IMAGE2_MUXER"
+	default "1"
 config IMAGE2PIPE_MUXER
-	bool "IMAGE2PIPE_MUXER"
-	default y
+	int "IMAGE2PIPE_MUXER"
+	default "1"
 config IPOD_MUXER
-	bool "IPOD_MUXER"
-	default y
+	int "IPOD_MUXER"
+	default "1"
 config M4V_MUXER
-	bool "M4V_MUXER"
-	default y
+	int "M4V_MUXER"
+	default "1"
 config MATROSKA_MUXER
-	bool "MATROSKA_MUXER"
-	default y
+	int "MATROSKA_MUXER"
+	default "1"
 config MATROSKA_AUDIO_MUXER
-	bool "MATROSKA_AUDIO_MUXER"
-	default y
+	int "MATROSKA_AUDIO_MUXER"
+	default "1"
 config MJPEG_MUXER
-	bool "MJPEG_MUXER"
-	default y
+	int "MJPEG_MUXER"
+	default "1"
 config MLP_MUXER
-	bool "MLP_MUXER"
-	default y
+	int "MLP_MUXER"
+	default "1"
 config MMF_MUXER
-	bool "MMF_MUXER"
-	default y
+	int "MMF_MUXER"
+	default "1"
 config MOV_MUXER
-	bool "MOV_MUXER"
-	default y
+	int "MOV_MUXER"
+	default "1"
 config MP2_MUXER
-	bool "MP2_MUXER"
-	default y
+	int "MP2_MUXER"
+	default "1"
 config MP3_MUXER
-	bool "MP3_MUXER"
-	default y
+	int "MP3_MUXER"
+	default "1"
 config MP4_MUXER
-	bool "MP4_MUXER"
-	default y
+	int "MP4_MUXER"
+	default "1"
 config MPEG1SYSTEM_MUXER
-	bool "MPEG1SYSTEM_MUXER"
-	default n
+	int "MPEG1SYSTEM_MUXER"
+	default "0"
 config MPEG1VCD_MUXER
-	bool "MPEG1VCD_MUXER"
-	default n
+	int "MPEG1VCD_MUXER"
+	default "0"
 config MPEG1VIDEO_MUXER
-	bool "MPEG1VIDEO_MUXER"
-	default n
+	int "MPEG1VIDEO_MUXER"
+	default "0"
 config MPEG2DVD_MUXER
-	bool "MPEG2DVD_MUXER"
-	default n
+	int "MPEG2DVD_MUXER"
+	default "0"
 config MPEG2SVCD_MUXER
-	bool "MPEG2SVCD_MUXER"
-	default n
+	int "MPEG2SVCD_MUXER"
+	default "0"
 config MPEG2VIDEO_MUXER
-	bool "MPEG2VIDEO_MUXER"
-	default n
+	int "MPEG2VIDEO_MUXER"
+	default "0"
 config MPEG2VOB_MUXER
-	bool "MPEG2VOB_MUXER"
-	default n
+	int "MPEG2VOB_MUXER"
+	default "0"
 config MPEGTS_MUXER
-	bool "MPEGTS_MUXER"
-	default n
+	int "MPEGTS_MUXER"
+	default "0"
 config MPJPEG_MUXER
-	bool "MPJPEG_MUXER"
-	default y
+	int "MPJPEG_MUXER"
+	default "1"
 config MXF_MUXER
-	bool "MXF_MUXER"
-	default y
+	int "MXF_MUXER"
+	default "1"
 config MXF_D10_MUXER
-	bool "MXF_D10_MUXER"
-	default y
+	int "MXF_D10_MUXER"
+	default "1"
 config NULL_MUXER
-	bool "NULL_MUXER"
-	default y
+	int "NULL_MUXER"
+	default "1"
 config NUT_MUXER
-	bool "NUT_MUXER"
-	default y
+	int "NUT_MUXER"
+	default "1"
 config OGG_MUXER
-	bool "OGG_MUXER"
-	default y
+	int "OGG_MUXER"
+	default "1"
 config PCM_ALAW_MUXER
-	bool "PCM_ALAW_MUXER"
-	default y
+	int "PCM_ALAW_MUXER"
+	default "1"
 config PCM_MULAW_MUXER
-	bool "PCM_MULAW_MUXER"
-	default y
+	int "PCM_MULAW_MUXER"
+	default "1"
 config PCM_F64BE_MUXER
-	bool "PCM_F64BE_MUXER"
-	default y
+	int "PCM_F64BE_MUXER"
+	default "1"
 config PCM_F64LE_MUXER
-	bool "PCM_F64LE_MUXER"
-	default y
+	int "PCM_F64LE_MUXER"
+	default "1"
 config PCM_F32BE_MUXER
-	bool "PCM_F32BE_MUXER"
-	default y
+	int "PCM_F32BE_MUXER"
+	default "1"
 config PCM_F32LE_MUXER
-	bool "PCM_F32LE_MUXER"
-	default y
+	int "PCM_F32LE_MUXER"
+	default "1"
 config PCM_S32BE_MUXER
-	bool "PCM_S32BE_MUXER"
-	default y
+	int "PCM_S32BE_MUXER"
+	default "1"
 config PCM_S32LE_MUXER
-	bool "PCM_S32LE_MUXER"
-	default y
+	int "PCM_S32LE_MUXER"
+	default "1"
 config PCM_S24BE_MUXER
-	bool "PCM_S24BE_MUXER"
-	default y
+	int "PCM_S24BE_MUXER"
+	default "1"
 config PCM_S24LE_MUXER
-	bool "PCM_S24LE_MUXER"
-	default y
+	int "PCM_S24LE_MUXER"
+	default "1"
 config PCM_S16BE_MUXER
-	bool "PCM_S16BE_MUXER"
-	default y
+	int "PCM_S16BE_MUXER"
+	default "1"
 config PCM_S16LE_MUXER
-	bool "PCM_S16LE_MUXER"
-	default y
+	int "PCM_S16LE_MUXER"
+	default "1"
 config PCM_S8_MUXER
-	bool "PCM_S8_MUXER"
-	default y
+	int "PCM_S8_MUXER"
+	default "1"
 config PCM_U32BE_MUXER
-	bool "PCM_U32BE_MUXER"
-	default y
+	int "PCM_U32BE_MUXER"
+	default "1"
 config PCM_U32LE_MUXER
-	bool "PCM_U32LE_MUXER"
-	default y
+	int "PCM_U32LE_MUXER"
+	default "1"
 config PCM_U24BE_MUXER
-	bool "PCM_U24BE_MUXER"
-	default y
+	int "PCM_U24BE_MUXER"
+	default "1"
 config PCM_U24LE_MUXER
-	bool "PCM_U24LE_MUXER"
-	default y
+	int "PCM_U24LE_MUXER"
+	default "1"
 config PCM_U16BE_MUXER
-	bool "PCM_U16BE_MUXER"
-	default y
+	int "PCM_U16BE_MUXER"
+	default "1"
 config PCM_U16LE_MUXER
-	bool "PCM_U16LE_MUXER"
-	default y
+	int "PCM_U16LE_MUXER"
+	default "1"
 config PCM_U8_MUXER
-	bool "PCM_U8_MUXER"
-	default y
+	int "PCM_U8_MUXER"
+	default "1"
 config PSP_MUXER
-	bool "PSP_MUXER"
-	default y
+	int "PSP_MUXER"
+	default "1"
 config RAWVIDEO_MUXER
-	bool "RAWVIDEO_MUXER"
-	default y
+	int "RAWVIDEO_MUXER"
+	default "1"
 config RM_MUXER
-	bool "RM_MUXER"
-	default y
+	int "RM_MUXER"
+	default "1"
 config ROQ_MUXER
-	bool "ROQ_MUXER"
-	default y
+	int "ROQ_MUXER"
+	default "1"
 config SOX_MUXER
-	bool "SOX_MUXER"
-	default y
+	int "SOX_MUXER"
+	default "1"
 config SPDIF_MUXER
-	bool "SPDIF_MUXER"
-	default y
+	int "SPDIF_MUXER"
+	default "1"
 config SWF_MUXER
-	bool "SWF_MUXER"
-	default y
+	int "SWF_MUXER"
+	default "1"
 config TG2_MUXER
-	bool "TG2_MUXER"
-	default y
+	int "TG2_MUXER"
+	default "1"
 config TGP_MUXER
-	bool "TGP_MUXER"
-	default y
+	int "TGP_MUXER"
+	default "1"
 config TRUEHD_MUXER
-	bool "TRUEHD_MUXER"
-	default y
+	int "TRUEHD_MUXER"
+	default "1"
 config VC1T_MUXER
-	bool "VC1T_MUXER"
-	default y
+	int "VC1T_MUXER"
+	default "1"
 config VOC_MUXER
-	bool "VOC_MUXER"
-	default y
+	int "VOC_MUXER"
+	default "1"
 config WAV_MUXER
-	bool "WAV_MUXER"
-	default y
+	int "WAV_MUXER"
+	default "1"
 config YUV4MPEGPIPE_MUXER
-	bool "YUV4MPEGPIPE_MUXER"
-	default n
+	int "YUV4MPEGPIPE_MUXER"
+	default "0"
 
 config RTP_MUXER
-	bool "RTP_MUXER"
-	default n
+	int "RTP_MUXER"
+	default "0"
 config LIBNUT_MUXER
-	bool "LIBNUT_MUXER"
-	default n
+	int "LIBNUT_MUXER"
+	default "0"
 config FILMSTRIP_MUXER
-	bool "FILMSTRIP_MUXER"
-	default n
+	int "FILMSTRIP_MUXER"
+	default "0"

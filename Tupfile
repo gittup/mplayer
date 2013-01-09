@@ -33,7 +33,7 @@ CFLAGS_libao2/ao_oss.c += -DPATH_DEV_MIXER='"/dev/mixer"'
 SRCS_AUDIO_INPUT-@(ALSA1X)           += stream/ai_alsa1x.c
 SRCS_AUDIO_INPUT-@(ALSA9)            += stream/ai_alsa.c
 SRCS_AUDIO_INPUT-@(OSS)              += stream/ai_oss.c
-SRCS_COMMON-@(AUDIO_INPUT)           += $(SRCS_AUDIO_INPUT-y)
+SRCS_COMMON-@(AUDIO_INPUT)           += $(SRCS_AUDIO_INPUT-1) $(SRCS_AUDIO_INPUT-y)
 SRCS_COMMON-@(BITMAP_FONT)           += libvo/font_load.c
 SRCS_COMMON-@(CDDA)                  += stream/stream_cdda.c \
                                         stream/cdinfo.c
@@ -187,7 +187,7 @@ SRCS_COMMON-@(LIBMPEG2)              += libmpcodecs/vd_libmpeg2.c \
                                         libmpeg2/idct.c \
                                         libmpeg2/motion_comp.c \
                                         libmpeg2/slice.c \
-                                        $(SRCS_LIBMPEG2-y)
+                                        $(SRCS_LIBMPEG2-1) $(SRCS_LIBMPEG2-y)
 
 SRCS_COMMON-@(LIBNEMESI)             += libmpdemux/demux_nemesi.c \
                                         stream/stream_nemesi.c
@@ -207,12 +207,12 @@ SRCS_MP3LIB-X86-@(HAVE_AMD3DNOWEXT)  += mp3lib/dct36_k7.c \
                                         mp3lib/dct64_k7.c
 SRCS_MP3LIB-X86-@(HAVE_MMX)          += mp3lib/dct64_mmx.c
 SRCS_MP3LIB-@(ARCH_X86_32)           += mp3lib/decode_i586.c \
-                                        $(SRCS_MP3LIB-X86-y)
+                                        $(SRCS_MP3LIB-X86-1) $(SRCS_MP3LIB-X86-y)
 SRCS_MP3LIB-@(HAVE_ALTIVEC)          += mp3lib/dct64_altivec.c
 SRCS_MP3LIB-@(HAVE_MMX)              += mp3lib/decode_mmx.c
 SRCS_MP3LIB-@(HAVE_SSE)              += mp3lib/dct64_sse.c
 SRCS_COMMON-@(MP3LIB)                += libmpcodecs/ad_mp3lib.c mp3lib/sr1.c \
-                                        $(SRCS_MP3LIB-y)
+                                        $(SRCS_MP3LIB-1) $(SRCS_MP3LIB-y)
 
 SRCS_COMMON-@(MUSEPACK)              += libmpcodecs/ad_mpc.c \
                                         libmpdemux/demux_mpc.c
@@ -525,7 +525,7 @@ SRCS_COMMON = asxparser.c \
               stream/stream_mf.c \
               stream/stream_null.c \
               stream/url.c \
-              $(SRCS_COMMON-y)
+              $(SRCS_COMMON-1) $(SRCS_COMMON-y)
 
 SRCS_MPLAYER-@(3DFX)         += libvo/vo_3dfx.c
 SRCS_MPLAYER-@(AA)           += libvo/vo_aa.c
@@ -684,7 +684,7 @@ SRCS_MPLAYER = command.c \
                libvo/video_out.c \
                libvo/vo_mpegpes.c \
                libvo/vo_null.c \
-               $(SRCS_MPLAYER-y)
+               $(SRCS_MPLAYER-1) $(SRCS_MPLAYER-y)
 
 SRCS_MENCODER-@(FAAC)             += libmpcodecs/ae_faac.c
 SRCS_MENCODER-@(LIBAVCODEC)       += libmpcodecs/ae_lavc.c libmpcodecs/ve_lavc.c
@@ -712,20 +712,20 @@ SRCS_MENCODER = mencoder.c \
                 libmpdemux/muxer_mpeg.c \
                 libmpdemux/muxer_rawaudio.c \
                 libmpdemux/muxer_rawvideo.c \
-                $(SRCS_MENCODER-y)
+                $(SRCS_MENCODER-1) $(SRCS_MENCODER-y)
 
 COMMON_LIBS-@(LIBAVFORMAT_A)      += libavformat/libavformat.a
 COMMON_LIBS-@(LIBAVCODEC_A)       += libavcodec/libavcodec.a
 COMMON_LIBS-@(LIBAVUTIL_A)        += libavutil/libavutil.a
 COMMON_LIBS-@(LIBPOSTPROC_A)      += libpostproc/libpostproc.a
 COMMON_LIBS-@(LIBSWSCALE_A)       += libswscale/libswscale.a
-COMMON_LIBS += $(COMMON_LIBS-yes)
+COMMON_LIBS += $(COMMON_LIBS-1) $(COMMON_LIBS-y)
 
 objs_COMMON    += $(addsuffix .c, $(basename $(SRCS_COMMON)))
 objs_MENCODER  += $(addsuffix .c, $(basename $(SRCS_MENCODER)))
 objs_MPLAYER   += $(addsuffix .c, $(basename $(SRCS_MPLAYER)))
 objs_MPLAYER-$(PE_EXECUTABLE) += osdep/mplayer-rc.c
-objs_MPLAYER   += $(objs_MPLAYER-y)
+objs_MPLAYER   += $(objs_MPLAYER-1) $(objs_MPLAYER-y)
 
 MENCODER_DEPS = $(objs_MENCODER) $(objs_COMMON) $(COMMON_LIBS)
 MPLAYER_DEPS  = $(objs_MPLAYER)  $(objs_COMMON) $(COMMON_LIBS)
@@ -802,8 +802,8 @@ libs += $(GITTUP_ROOT)/zlib/libz.a
 libs += $(GITTUP_ROOT)/uClibc/libpthread/linuxthreads.old/libpthread.a
 libs += $(GITTUP_ROOT)/uClibc/libm/libm.a
 ifeq (@(MPLAYER),y)
-objs-@(HAVE_MMX) += $(MMX-objs-y)
-objs += $(objs-y)
+objs-@(HAVE_MMX) += $(MMX-objs-1) $(MMX-objs-y)
+objs += $(objs-1) $(objs-y)
 : foreach $(SRCS_COMMON) | $(headers) |> !cc |> %B.o {common_objs}
 : foreach $(SRCS_MPLAYER) | $(headers) |> !cc |> %B.o {mplayer_objs}
 : {mplayer_objs} {common_objs} $(libs) |> !ld |> mplayer

@@ -1,301 +1,301 @@
 config ASV1_ENCODER
-	bool "ASV1_ENCODER"
-	default y
+	int "ASV1_ENCODER"
+	default "1"
 config ASV2_ENCODER
-	bool "ASV2_ENCODER"
-	default y
+	int "ASV2_ENCODER"
+	default "1"
 config BMP_ENCODER
-	bool "BMP_ENCODER"
-	default y
+	int "BMP_ENCODER"
+	default "1"
 config DNXHD_ENCODER
-	bool "DNXHD_ENCODER"
-	default n
+	int "DNXHD_ENCODER"
+	default "0"
 config DVVIDEO_ENCODER
-	bool "DVVIDEO_ENCODER"
-	default y
+	int "DVVIDEO_ENCODER"
+	default "1"
 config FFV1_ENCODER
-	bool "FFV1_ENCODER"
-	default y
+	int "FFV1_ENCODER"
+	default "1"
 config FFVHUFF_ENCODER
-	bool "FFVHUFF_ENCODER"
-	default y
+	int "FFVHUFF_ENCODER"
+	default "1"
 config FLASHSV_ENCODER
-	bool "FLASHSV_ENCODER"
-	default y
+	int "FLASHSV_ENCODER"
+	default "1"
 config FLV_ENCODER
-	bool "FLV_ENCODER"
-	default n
+	int "FLV_ENCODER"
+	default "0"
 config GIF_ENCODER
-	bool "GIF_ENCODER"
-	default y
+	int "GIF_ENCODER"
+	default "1"
 config H261_ENCODER
-	bool "H261_ENCODER"
-	default n
+	int "H261_ENCODER"
+	default "0"
 config H263_ENCODER
-	bool "H263_ENCODER"
-	default n
+	int "H263_ENCODER"
+	default "0"
 config H263P_ENCODER
-	bool "H263P_ENCODER"
-	default n
+	int "H263P_ENCODER"
+	default "0"
 config HUFFYUV_ENCODER
-	bool "HUFFYUV_ENCODER"
-	default y
+	int "HUFFYUV_ENCODER"
+	default "1"
 config JPEGLS_ENCODER
-	bool "JPEGLS_ENCODER"
-	default y
+	int "JPEGLS_ENCODER"
+	default "1"
 config LJPEG_ENCODER
-	bool "LJPEG_ENCODER"
-	default n
+	int "LJPEG_ENCODER"
+	default "0"
 config MJPEG_ENCODER
-	bool "MJPEG_ENCODER"
-	default n
+	int "MJPEG_ENCODER"
+	default "0"
 config MPEG1VIDEO_ENCODER
-	bool "MPEG1VIDEO_ENCODER"
-	default n
+	int "MPEG1VIDEO_ENCODER"
+	default "0"
 config MPEG2VIDEO_ENCODER
-	bool "MPEG2VIDEO_ENCODER"
-	default n
+	int "MPEG2VIDEO_ENCODER"
+	default "0"
 config MPEG4_ENCODER
-	bool "MPEG4_ENCODER"
-	default n
+	int "MPEG4_ENCODER"
+	default "0"
 config MSMPEG4V1_ENCODER
-	bool "MSMPEG4V1_ENCODER"
-	default n
+	int "MSMPEG4V1_ENCODER"
+	default "0"
 config MSMPEG4V2_ENCODER
-	bool "MSMPEG4V2_ENCODER"
-	default n
+	int "MSMPEG4V2_ENCODER"
+	default "0"
 config MSMPEG4V3_ENCODER
-	bool "MSMPEG4V3_ENCODER"
-	default n
+	int "MSMPEG4V3_ENCODER"
+	default "0"
 config PAM_ENCODER
-	bool "PAM_ENCODER"
-	default y
+	int "PAM_ENCODER"
+	default "1"
 config PBM_ENCODER
-	bool "PBM_ENCODER"
-	default y
+	int "PBM_ENCODER"
+	default "1"
 config PCX_ENCODER
-	bool "PCX_ENCODER"
-	default y
+	int "PCX_ENCODER"
+	default "1"
 config PGM_ENCODER
-	bool "PGM_ENCODER"
-	default y
+	int "PGM_ENCODER"
+	default "1"
 config PGMYUV_ENCODER
-	bool "PGMYUV_ENCODER"
-	default y
+	int "PGMYUV_ENCODER"
+	default "1"
 config PNG_ENCODER
-	bool "PNG_ENCODER"
-	default y
+	int "PNG_ENCODER"
+	default "1"
 config PPM_ENCODER
-	bool "PPM_ENCODER"
-	default y
+	int "PPM_ENCODER"
+	default "1"
 config QTRLE_ENCODER
-	bool "QTRLE_ENCODER"
-	default y
+	int "QTRLE_ENCODER"
+	default "1"
 config RAWVIDEO_ENCODER
-	bool "RAWVIDEO_ENCODER"
-	default y
+	int "RAWVIDEO_ENCODER"
+	default "1"
 config ROQ_ENCODER
-	bool "ROQ_ENCODER"
-	default y
+	int "ROQ_ENCODER"
+	default "1"
 config RV10_ENCODER
-	bool "RV10_ENCODER"
-	default y
+	int "RV10_ENCODER"
+	default "1"
 config RV20_ENCODER
-	bool "RV20_ENCODER"
-	default y
+	int "RV20_ENCODER"
+	default "1"
 config SGI_ENCODER
-	bool "SGI_ENCODER"
-	default y
+	int "SGI_ENCODER"
+	default "1"
 config SNOW_ENCODER
-	bool "SNOW_ENCODER"
-	default n
+	int "SNOW_ENCODER"
+	default "0"
 config SVQ1_ENCODER
-	bool "SVQ1_ENCODER"
-	default n
+	int "SVQ1_ENCODER"
+	default "0"
 config TARGA_ENCODER
-	bool "TARGA_ENCODER"
-	default y
+	int "TARGA_ENCODER"
+	default "1"
 config TIFF_ENCODER
-	bool "TIFF_ENCODER"
-	default y
+	int "TIFF_ENCODER"
+	default "1"
 config V210_ENCODER
-	bool "V210_ENCODER"
-	default y
+	int "V210_ENCODER"
+	default "1"
 config WMV1_ENCODER
-	bool "WMV1_ENCODER"
-	default n
+	int "WMV1_ENCODER"
+	default "0"
 config WMV2_ENCODER
-	bool "WMV2_ENCODER"
-	default n
+	int "WMV2_ENCODER"
+	default "0"
 config ZLIB_ENCODER
-	bool "ZLIB_ENCODER"
-	default y
+	int "ZLIB_ENCODER"
+	default "1"
 config ZMBV_ENCODER
-	bool "ZMBV_ENCODER"
-	default y
+	int "ZMBV_ENCODER"
+	default "1"
 config AC3_ENCODER
-	bool "AC3_ENCODER"
-	default y
+	int "AC3_ENCODER"
+	default "1"
 config ALAC_ENCODER
-	bool "ALAC_ENCODER"
-	default y
+	int "ALAC_ENCODER"
+	default "1"
 config FLAC_ENCODER
-	bool "FLAC_ENCODER"
-	default y
+	int "FLAC_ENCODER"
+	default "1"
 config MP2_ENCODER
-	bool "MP2_ENCODER"
-	default y
+	int "MP2_ENCODER"
+	default "1"
 config NELLYMOSER_ENCODER
-	bool "NELLYMOSER_ENCODER"
-	default y
+	int "NELLYMOSER_ENCODER"
+	default "1"
 config SONIC_ENCODER
-	bool "SONIC_ENCODER"
-	default y
+	int "SONIC_ENCODER"
+	default "1"
 config SONIC_LS_ENCODER
-	bool "SONIC_LS_ENCODER"
-	default y
+	int "SONIC_LS_ENCODER"
+	default "1"
 config VORBIS_ENCODER
-	bool "VORBIS_ENCODER"
-	default y
+	int "VORBIS_ENCODER"
+	default "1"
 config WMAV1_ENCODER
-	bool "WMAV1_ENCODER"
-	default y
+	int "WMAV1_ENCODER"
+	default "1"
 config WMAV2_ENCODER
-	bool "WMAV2_ENCODER"
-	default y
+	int "WMAV2_ENCODER"
+	default "1"
 config PCM_ALAW_ENCODER
-	bool "PCM_ALAW_ENCODER"
-	default y
+	int "PCM_ALAW_ENCODER"
+	default "1"
 config PCM_F32BE_ENCODER
-	bool "PCM_F32BE_ENCODER"
-	default y
+	int "PCM_F32BE_ENCODER"
+	default "1"
 config PCM_F32LE_ENCODER
-	bool "PCM_F32LE_ENCODER"
-	default y
+	int "PCM_F32LE_ENCODER"
+	default "1"
 config PCM_F64BE_ENCODER
-	bool "PCM_F64BE_ENCODER"
-	default y
+	int "PCM_F64BE_ENCODER"
+	default "1"
 config PCM_F64LE_ENCODER
-	bool "PCM_F64LE_ENCODER"
-	default y
+	int "PCM_F64LE_ENCODER"
+	default "1"
 config PCM_MULAW_ENCODER
-	bool "PCM_MULAW_ENCODER"
-	default y
+	int "PCM_MULAW_ENCODER"
+	default "1"
 config PCM_S8_ENCODER
-	bool "PCM_S8_ENCODER"
-	default y
+	int "PCM_S8_ENCODER"
+	default "1"
 config PCM_S16BE_ENCODER
-	bool "PCM_S16BE_ENCODER"
-	default y
+	int "PCM_S16BE_ENCODER"
+	default "1"
 config PCM_S16LE_ENCODER
-	bool "PCM_S16LE_ENCODER"
-	default y
+	int "PCM_S16LE_ENCODER"
+	default "1"
 config PCM_S24BE_ENCODER
-	bool "PCM_S24BE_ENCODER"
-	default y
+	int "PCM_S24BE_ENCODER"
+	default "1"
 config PCM_S24DAUD_ENCODER
-	bool "PCM_S24DAUD_ENCODER"
-	default y
+	int "PCM_S24DAUD_ENCODER"
+	default "1"
 config PCM_S24LE_ENCODER
-	bool "PCM_S24LE_ENCODER"
-	default y
+	int "PCM_S24LE_ENCODER"
+	default "1"
 config PCM_S32BE_ENCODER
-	bool "PCM_S32BE_ENCODER"
-	default y
+	int "PCM_S32BE_ENCODER"
+	default "1"
 config PCM_S32LE_ENCODER
-	bool "PCM_S32LE_ENCODER"
-	default y
+	int "PCM_S32LE_ENCODER"
+	default "1"
 config PCM_U8_ENCODER
-	bool "PCM_U8_ENCODER"
-	default y
+	int "PCM_U8_ENCODER"
+	default "1"
 config PCM_U16BE_ENCODER
-	bool "PCM_U16BE_ENCODER"
-	default y
+	int "PCM_U16BE_ENCODER"
+	default "1"
 config PCM_U16LE_ENCODER
-	bool "PCM_U16LE_ENCODER"
-	default y
+	int "PCM_U16LE_ENCODER"
+	default "1"
 config PCM_U24BE_ENCODER
-	bool "PCM_U24BE_ENCODER"
-	default y
+	int "PCM_U24BE_ENCODER"
+	default "1"
 config PCM_U24LE_ENCODER
-	bool "PCM_U24LE_ENCODER"
-	default y
+	int "PCM_U24LE_ENCODER"
+	default "1"
 config PCM_U32BE_ENCODER
-	bool "PCM_U32BE_ENCODER"
-	default y
+	int "PCM_U32BE_ENCODER"
+	default "1"
 config PCM_U32LE_ENCODER
-	bool "PCM_U32LE_ENCODER"
-	default y
+	int "PCM_U32LE_ENCODER"
+	default "1"
 config PCM_ZORK_ENCODER
-	bool "PCM_ZORK_ENCODER"
-	default y
+	int "PCM_ZORK_ENCODER"
+	default "1"
 config ROQ_DPCM_ENCODER
-	bool "ROQ_DPCM_ENCODER"
-	default y
+	int "ROQ_DPCM_ENCODER"
+	default "1"
 config ADPCM_ADX_ENCODER
-	bool "ADPCM_ADX_ENCODER"
-	default y
+	int "ADPCM_ADX_ENCODER"
+	default "1"
 config ADPCM_G726_ENCODER
-	bool "ADPCM_G726_ENCODER"
-	default y
+	int "ADPCM_G726_ENCODER"
+	default "1"
 config ADPCM_IMA_QT_ENCODER
-	bool "ADPCM_IMA_QT_ENCODER"
-	default y
+	int "ADPCM_IMA_QT_ENCODER"
+	default "1"
 config ADPCM_IMA_WAV_ENCODER
-	bool "ADPCM_IMA_WAV_ENCODER"
-	default y
+	int "ADPCM_IMA_WAV_ENCODER"
+	default "1"
 config ADPCM_MS_ENCODER
-	bool "ADPCM_MS_ENCODER"
-	default y
+	int "ADPCM_MS_ENCODER"
+	default "1"
 config ADPCM_SWF_ENCODER
-	bool "ADPCM_SWF_ENCODER"
-	default y
+	int "ADPCM_SWF_ENCODER"
+	default "1"
 config ADPCM_YAMAHA_ENCODER
-	bool "ADPCM_YAMAHA_ENCODER"
-	default y
+	int "ADPCM_YAMAHA_ENCODER"
+	default "1"
 config DVBSUB_ENCODER
-	bool "DVBSUB_ENCODER"
-	default y
+	int "DVBSUB_ENCODER"
+	default "1"
 config DVDSUB_ENCODER
-	bool "DVDSUB_ENCODER"
-	default y
+	int "DVDSUB_ENCODER"
+	default "1"
 config XSUB_ENCODER
-	bool "XSUB_ENCODER"
-	default y
+	int "XSUB_ENCODER"
+	default "1"
 config LIBFAAC_ENCODER
-	bool "LIBFAAC_ENCODER"
-	default n
+	int "LIBFAAC_ENCODER"
+	default "0"
 config LIBXVID_ENCODER
-	bool "LIBXVID_ENCODER"
-	default n
+	int "LIBXVID_ENCODER"
+	default "0"
 config LIBDIRAC_ENCODER
-	bool "LIBDIRAC_ENCODER"
-	default n
+	int "LIBDIRAC_ENCODER"
+	default "0"
 config LIBSCHROEDINGER_ENCODER
-	bool "LIBSCHROEDINGER_ENCODER"
-	default n
+	int "LIBSCHROEDINGER_ENCODER"
+	default "0"
 config LIBMP3LAME_ENCODER
-	bool "LIBMP3LAME_ENCODER"
-	default n
+	int "LIBMP3LAME_ENCODER"
+	default "0"
 
 config AAC_ENCODER
-	bool "AAC_ENCODER"
-	default n
+	int "AAC_ENCODER"
+	default "0"
 config LIBGSM_ENCODER
-	bool "LIBGSM_ENCODER"
-	default n
+	int "LIBGSM_ENCODER"
+	default "0"
 config LIBGSM_MS_ENCODER
-	bool "LIBGSM_MS_ENCODER"
-	default n
+	int "LIBGSM_MS_ENCODER"
+	default "0"
 config LIBOPENCORE_AMRNB_ENCODER
-	bool "LIBOPENCORE_AMRNB_ENCODER"
-	default n
+	int "LIBOPENCORE_AMRNB_ENCODER"
+	default "0"
 config LIBTHEORA_ENCODER
-	bool "LIBTHEORA_ENCODER"
-	default n
+	int "LIBTHEORA_ENCODER"
+	default "0"
 config LIBVORBIS_ENCODER
-	bool "LIBVORBIS_ENCODER"
-	default n
+	int "LIBVORBIS_ENCODER"
+	default "0"
 config LIBX264_ENCODER
-	bool "LIBX264_ENCODER"
-	default n
+	int "LIBX264_ENCODER"
+	default "0"

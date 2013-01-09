@@ -1,751 +1,751 @@
 config AASC_DECODER
-	bool "AASC_DECODER"
-	default y
+	int "AASC_DECODER"
+	default "1"
 config AMV_DECODER
-	bool "AMV_DECODER"
-	default y
+	int "AMV_DECODER"
+	default "1"
 config ASV1_DECODER
-	bool "ASV1_DECODER"
-	default y
+	int "ASV1_DECODER"
+	default "1"
 config ASV2_DECODER
-	bool "ASV2_DECODER"
-	default y
+	int "ASV2_DECODER"
+	default "1"
 config AVS_DECODER
-	bool "AVS_DECODER"
-	default y
+	int "AVS_DECODER"
+	default "1"
 config BETHSOFTVID_DECODER
-	bool "BETHSOFTVID_DECODER"
-	default y
+	int "BETHSOFTVID_DECODER"
+	default "1"
 config BFI_DECODER
-	bool "BFI_DECODER"
-	default y
+	int "BFI_DECODER"
+	default "1"
 config BMP_DECODER
-	bool "BMP_DECODER"
-	default y
+	int "BMP_DECODER"
+	default "1"
 config C93_DECODER
-	bool "C93_DECODER"
-	default y
+	int "C93_DECODER"
+	default "1"
 config CAVS_DECODER
-	bool "CAVS_DECODER"
-	default n
+	int "CAVS_DECODER"
+	default "0"
 config CINEPAK_DECODER
-	bool "CINEPAK_DECODER"
-	default y
+	int "CINEPAK_DECODER"
+	default "1"
 config CLJR_DECODER
-	bool "CLJR_DECODER"
-	default y
+	int "CLJR_DECODER"
+	default "1"
 config CSCD_DECODER
-	bool "CSCD_DECODER"
-	default y
+	int "CSCD_DECODER"
+	default "1"
 config CYUV_DECODER
-	bool "CYUV_DECODER"
-	default y
+	int "CYUV_DECODER"
+	default "1"
 config DNXHD_DECODER
-	bool "DNXHD_DECODER"
-	default y
+	int "DNXHD_DECODER"
+	default "1"
 config DPX_DECODER
-	bool "DPX_DECODER"
-	default y
+	int "DPX_DECODER"
+	default "1"
 config DSICINVIDEO_DECODER
-	bool "DSICINVIDEO_DECODER"
-	default y
+	int "DSICINVIDEO_DECODER"
+	default "1"
 config DVVIDEO_DECODER
-	bool "DVVIDEO_DECODER"
-	default y
+	int "DVVIDEO_DECODER"
+	default "1"
 config DXA_DECODER
-	bool "DXA_DECODER"
-	default y
+	int "DXA_DECODER"
+	default "1"
 config EACMV_DECODER
-	bool "EACMV_DECODER"
-	default y
+	int "EACMV_DECODER"
+	default "1"
 config EAMAD_DECODER
-	bool "EAMAD_DECODER"
-	default n
+	int "EAMAD_DECODER"
+	default "0"
 config EATGQ_DECODER
-	bool "EATGQ_DECODER"
-	default y
+	int "EATGQ_DECODER"
+	default "1"
 config EATGV_DECODER
-	bool "EATGV_DECODER"
-	default y
+	int "EATGV_DECODER"
+	default "1"
 config EATQI_DECODER
-	bool "EATQI_DECODER"
-	default n
+	int "EATQI_DECODER"
+	default "0"
 config EIGHTBPS_DECODER
-	bool "EIGHTBPS_DECODER"
-	default y
+	int "EIGHTBPS_DECODER"
+	default "1"
 config EIGHTSVX_EXP_DECODER
-	bool "EIGHTSVX_EXP_DECODER"
-	default y
+	int "EIGHTSVX_EXP_DECODER"
+	default "1"
 config EIGHTSVX_FIB_DECODER
-	bool "EIGHTSVX_FIB_DECODER"
-	default y
+	int "EIGHTSVX_FIB_DECODER"
+	default "1"
 config ESCAPE124_DECODER
-	bool "ESCAPE124_DECODER"
-	default y
+	int "ESCAPE124_DECODER"
+	default "1"
 config FFV1_DECODER
-	bool "FFV1_DECODER"
-	default y
+	int "FFV1_DECODER"
+	default "1"
 config FFVHUFF_DECODER
-	bool "FFVHUFF_DECODER"
-	default y
+	int "FFVHUFF_DECODER"
+	default "1"
 config FLASHSV_DECODER
-	bool "FLASHSV_DECODER"
-	default y
+	int "FLASHSV_DECODER"
+	default "1"
 config FLIC_DECODER
-	bool "FLIC_DECODER"
-	default y
+	int "FLIC_DECODER"
+	default "1"
 config FLV_DECODER
-	bool "FLV_DECODER"
-	default n
+	int "FLV_DECODER"
+	default "0"
 config FOURXM_DECODER
-	bool "FOURXM_DECODER"
-	default y
+	int "FOURXM_DECODER"
+	default "1"
 config FRAPS_DECODER
-	bool "FRAPS_DECODER"
-	default y
+	int "FRAPS_DECODER"
+	default "1"
 config FRWU_DECODER
-	bool "FRWU_DECODER"
-	default y
+	int "FRWU_DECODER"
+	default "1"
 config GIF_DECODER
-	bool "GIF_DECODER"
-	default y
+	int "GIF_DECODER"
+	default "1"
 config H261_DECODER
-	bool "H261_DECODER"
-	default n
+	int "H261_DECODER"
+	default "0"
 config H263_DECODER
-	bool "H263_DECODER"
-	default n
+	int "H263_DECODER"
+	default "0"
 config H263I_DECODER
-	bool "H263I_DECODER"
-	default n
+	int "H263I_DECODER"
+	default "0"
 config H264_DECODER
-	bool "H264_DECODER"
-	default n
+	int "H264_DECODER"
+	default "0"
 config HUFFYUV_DECODER
-	bool "HUFFYUV_DECODER"
-	default y
+	int "HUFFYUV_DECODER"
+	default "1"
 config IDCIN_DECODER
-	bool "IDCIN_DECODER"
-	default y
+	int "IDCIN_DECODER"
+	default "1"
 config INDEO2_DECODER
-	bool "INDEO2_DECODER"
-	default y
+	int "INDEO2_DECODER"
+	default "1"
 config INDEO3_DECODER
-	bool "INDEO3_DECODER"
-	default y
+	int "INDEO3_DECODER"
+	default "1"
 config INTERPLAY_VIDEO_DECODER
-	bool "INTERPLAY_VIDEO_DECODER"
-	default y
+	int "INTERPLAY_VIDEO_DECODER"
+	default "1"
 config JPEGLS_DECODER
-	bool "JPEGLS_DECODER"
-	default y
+	int "JPEGLS_DECODER"
+	default "1"
 config KMVC_DECODER
-	bool "KMVC_DECODER"
-	default y
+	int "KMVC_DECODER"
+	default "1"
 config LOCO_DECODER
-	bool "LOCO_DECODER"
-	default y
+	int "LOCO_DECODER"
+	default "1"
 config MDEC_DECODER
-	bool "MDEC_DECODER"
-	default n
+	int "MDEC_DECODER"
+	default "0"
 config MIMIC_DECODER
-	bool "MIMIC_DECODER"
-	default y
+	int "MIMIC_DECODER"
+	default "1"
 config MJPEG_DECODER
-	bool "MJPEG_DECODER"
-	default y
+	int "MJPEG_DECODER"
+	default "1"
 config MJPEGB_DECODER
-	bool "MJPEGB_DECODER"
-	default y
+	int "MJPEGB_DECODER"
+	default "1"
 config MMVIDEO_DECODER
-	bool "MMVIDEO_DECODER"
-	default y
+	int "MMVIDEO_DECODER"
+	default "1"
 config MOTIONPIXELS_DECODER
-	bool "MOTIONPIXELS_DECODER"
-	default y
+	int "MOTIONPIXELS_DECODER"
+	default "1"
 config MPEG1VIDEO_DECODER
-	bool "MPEG1VIDEO_DECODER"
-	default n
+	int "MPEG1VIDEO_DECODER"
+	default "0"
 config MPEG2VIDEO_DECODER
-	bool "MPEG2VIDEO_DECODER"
-	default n
+	int "MPEG2VIDEO_DECODER"
+	default "0"
 config MPEG4_DECODER
-	bool "MPEG4_DECODER"
-	default n
+	int "MPEG4_DECODER"
+	default "0"
 config MPEGVIDEO_DECODER
-	bool "MPEGVIDEO_DECODER"
-	default n
+	int "MPEGVIDEO_DECODER"
+	default "0"
 config MSMPEG4V1_DECODER
-	bool "MSMPEG4V1_DECODER"
-	default n
+	int "MSMPEG4V1_DECODER"
+	default "0"
 config MSMPEG4V2_DECODER
-	bool "MSMPEG4V2_DECODER"
-	default n
+	int "MSMPEG4V2_DECODER"
+	default "0"
 config MSMPEG4V3_DECODER
-	bool "MSMPEG4V3_DECODER"
-	default n
+	int "MSMPEG4V3_DECODER"
+	default "0"
 config MSRLE_DECODER
-	bool "MSRLE_DECODER"
-	default y
+	int "MSRLE_DECODER"
+	default "1"
 config MSVIDEO1_DECODER
-	bool "MSVIDEO1_DECODER"
-	default y
+	int "MSVIDEO1_DECODER"
+	default "1"
 config MSZH_DECODER
-	bool "MSZH_DECODER"
-	default y
+	int "MSZH_DECODER"
+	default "1"
 config NUV_DECODER
-	bool "NUV_DECODER"
-	default y
+	int "NUV_DECODER"
+	default "1"
 config PAM_DECODER
-	bool "PAM_DECODER"
-	default y
+	int "PAM_DECODER"
+	default "1"
 config PBM_DECODER
-	bool "PBM_DECODER"
-	default y
+	int "PBM_DECODER"
+	default "1"
 config PCX_DECODER
-	bool "PCX_DECODER"
-	default y
+	int "PCX_DECODER"
+	default "1"
 config PGM_DECODER
-	bool "PGM_DECODER"
-	default y
+	int "PGM_DECODER"
+	default "1"
 config PGMYUV_DECODER
-	bool "PGMYUV_DECODER"
-	default y
+	int "PGMYUV_DECODER"
+	default "1"
 config PNG_DECODER
-	bool "PNG_DECODER"
-	default y
+	int "PNG_DECODER"
+	default "1"
 config PPM_DECODER
-	bool "PPM_DECODER"
-	default y
+	int "PPM_DECODER"
+	default "1"
 config PTX_DECODER
-	bool "PTX_DECODER"
-	default y
+	int "PTX_DECODER"
+	default "1"
 config QDRAW_DECODER
-	bool "QDRAW_DECODER"
-	default y
+	int "QDRAW_DECODER"
+	default "1"
 config QPEG_DECODER
-	bool "QPEG_DECODER"
-	default y
+	int "QPEG_DECODER"
+	default "1"
 config QTRLE_DECODER
-	bool "QTRLE_DECODER"
-	default y
+	int "QTRLE_DECODER"
+	default "1"
 config RAWVIDEO_DECODER
-	bool "RAWVIDEO_DECODER"
-	default y
+	int "RAWVIDEO_DECODER"
+	default "1"
 config RL2_DECODER
-	bool "RL2_DECODER"
-	default y
+	int "RL2_DECODER"
+	default "1"
 config ROQ_DECODER
-	bool "ROQ_DECODER"
-	default y
+	int "ROQ_DECODER"
+	default "1"
 config RPZA_DECODER
-	bool "RPZA_DECODER"
-	default y
+	int "RPZA_DECODER"
+	default "1"
 config RV10_DECODER
-	bool "RV10_DECODER"
-	default n
+	int "RV10_DECODER"
+	default "0"
 config RV20_DECODER
-	bool "RV20_DECODER"
-	default n
+	int "RV20_DECODER"
+	default "0"
 config RV30_DECODER
-	bool "RV30_DECODER"
-	default n
+	int "RV30_DECODER"
+	default "0"
 config RV40_DECODER
-	bool "RV40_DECODER"
-	default n
+	int "RV40_DECODER"
+	default "0"
 config SGI_DECODER
-	bool "SGI_DECODER"
-	default y
+	int "SGI_DECODER"
+	default "1"
 config SMACKER_DECODER
-	bool "SMACKER_DECODER"
-	default y
+	int "SMACKER_DECODER"
+	default "1"
 config SMC_DECODER
-	bool "SMC_DECODER"
-	default y
+	int "SMC_DECODER"
+	default "1"
 config SNOW_DECODER
-	bool "SNOW_DECODER"
-	default y
+	int "SNOW_DECODER"
+	default "1"
 config SP5X_DECODER
-	bool "SP5X_DECODER"
-	default y
+	int "SP5X_DECODER"
+	default "1"
 config SUNRAST_DECODER
-	bool "SUNRAST_DECODER"
-	default y
+	int "SUNRAST_DECODER"
+	default "1"
 config SVQ1_DECODER
-	bool "SVQ1_DECODER"
-	default n
+	int "SVQ1_DECODER"
+	default "0"
 config SVQ3_DECODER
-	bool "SVQ3_DECODER"
-	default n
+	int "SVQ3_DECODER"
+	default "0"
 config TARGA_DECODER
-	bool "TARGA_DECODER"
-	default y
+	int "TARGA_DECODER"
+	default "1"
 config THEORA_DECODER
-	bool "THEORA_DECODER"
-	default y
+	int "THEORA_DECODER"
+	default "1"
 config THP_DECODER
-	bool "THP_DECODER"
-	default y
+	int "THP_DECODER"
+	default "1"
 config TIERTEXSEQVIDEO_DECODER
-	bool "TIERTEXSEQVIDEO_DECODER"
-	default y
+	int "TIERTEXSEQVIDEO_DECODER"
+	default "1"
 config TIFF_DECODER
-	bool "TIFF_DECODER"
-	default y
+	int "TIFF_DECODER"
+	default "1"
 config TMV_DECODER
-	bool "TMV_DECODER"
-	default y
+	int "TMV_DECODER"
+	default "1"
 config TRUEMOTION1_DECODER
-	bool "TRUEMOTION1_DECODER"
-	default y
+	int "TRUEMOTION1_DECODER"
+	default "1"
 config TRUEMOTION2_DECODER
-	bool "TRUEMOTION2_DECODER"
-	default y
+	int "TRUEMOTION2_DECODER"
+	default "1"
 config TSCC_DECODER
-	bool "TSCC_DECODER"
-	default y
+	int "TSCC_DECODER"
+	default "1"
 config TXD_DECODER
-	bool "TXD_DECODER"
-	default y
+	int "TXD_DECODER"
+	default "1"
 config ULTI_DECODER
-	bool "ULTI_DECODER"
-	default y
+	int "ULTI_DECODER"
+	default "1"
 config V210_DECODER
-	bool "V210_DECODER"
-	default y
+	int "V210_DECODER"
+	default "1"
 config V210X_DECODER
-	bool "V210X_DECODER"
-	default y
+	int "V210X_DECODER"
+	default "1"
 config VB_DECODER
-	bool "VB_DECODER"
-	default y
+	int "VB_DECODER"
+	default "1"
 config VC1_DECODER
-	bool "VC1_DECODER"
-	default n
+	int "VC1_DECODER"
+	default "0"
 config VCR1_DECODER
-	bool "VCR1_DECODER"
-	default y
+	int "VCR1_DECODER"
+	default "1"
 config VMDVIDEO_DECODER
-	bool "VMDVIDEO_DECODER"
-	default y
+	int "VMDVIDEO_DECODER"
+	default "1"
 config VMNC_DECODER
-	bool "VMNC_DECODER"
-	default y
+	int "VMNC_DECODER"
+	default "1"
 config VP3_DECODER
-	bool "VP3_DECODER"
-	default y
+	int "VP3_DECODER"
+	default "1"
 config VP5_DECODER
-	bool "VP5_DECODER"
-	default y
+	int "VP5_DECODER"
+	default "1"
 config VP6_DECODER
-	bool "VP6_DECODER"
-	default y
+	int "VP6_DECODER"
+	default "1"
 config VP6A_DECODER
-	bool "VP6A_DECODER"
-	default y
+	int "VP6A_DECODER"
+	default "1"
 config VP6F_DECODER
-	bool "VP6F_DECODER"
-	default y
+	int "VP6F_DECODER"
+	default "1"
 config VQA_DECODER
-	bool "VQA_DECODER"
-	default y
+	int "VQA_DECODER"
+	default "1"
 config WMV1_DECODER
-	bool "WMV1_DECODER"
-	default n
+	int "WMV1_DECODER"
+	default "0"
 config WMV2_DECODER
-	bool "WMV2_DECODER"
-	default n
+	int "WMV2_DECODER"
+	default "0"
 config WMV3_DECODER
-	bool "WMV3_DECODER"
-	default n
+	int "WMV3_DECODER"
+	default "0"
 config WNV1_DECODER
-	bool "WNV1_DECODER"
-	default y
+	int "WNV1_DECODER"
+	default "1"
 config XAN_WC3_DECODER
-	bool "XAN_WC3_DECODER"
-	default y
+	int "XAN_WC3_DECODER"
+	default "1"
 config XL_DECODER
-	bool "XL_DECODER"
-	default y
+	int "XL_DECODER"
+	default "1"
 config ZLIB_DECODER
-	bool "ZLIB_DECODER"
-	default y
+	int "ZLIB_DECODER"
+	default "1"
 config ZMBV_DECODER
-	bool "ZMBV_DECODER"
-	default y
+	int "ZMBV_DECODER"
+	default "1"
 config AAC_DECODER
-	bool "AAC_DECODER"
-	default y
+	int "AAC_DECODER"
+	default "1"
 config AC3_DECODER
-	bool "AC3_DECODER"
-	default y
+	int "AC3_DECODER"
+	default "1"
 config ALAC_DECODER
-	bool "ALAC_DECODER"
-	default y
+	int "ALAC_DECODER"
+	default "1"
 config APE_DECODER
-	bool "APE_DECODER"
-	default y
+	int "APE_DECODER"
+	default "1"
 config ATRAC1_DECODER
-	bool "ATRAC1_DECODER"
-	default y
+	int "ATRAC1_DECODER"
+	default "1"
 config ATRAC3_DECODER
-	bool "ATRAC3_DECODER"
-	default y
+	int "ATRAC3_DECODER"
+	default "1"
 config COOK_DECODER
-	bool "COOK_DECODER"
-	default y
+	int "COOK_DECODER"
+	default "1"
 config DCA_DECODER
-	bool "DCA_DECODER"
-	default y
+	int "DCA_DECODER"
+	default "1"
 config DSICINAUDIO_DECODER
-	bool "DSICINAUDIO_DECODER"
-	default y
+	int "DSICINAUDIO_DECODER"
+	default "1"
 config EAC3_DECODER
-	bool "EAC3_DECODER"
-	default y
+	int "EAC3_DECODER"
+	default "1"
 config FLAC_DECODER
-	bool "FLAC_DECODER"
-	default y
+	int "FLAC_DECODER"
+	default "1"
 config IMC_DECODER
-	bool "IMC_DECODER"
-	default y
+	int "IMC_DECODER"
+	default "1"
 config MACE3_DECODER
-	bool "MACE3_DECODER"
-	default y
+	int "MACE3_DECODER"
+	default "1"
 config MACE6_DECODER
-	bool "MACE6_DECODER"
-	default y
+	int "MACE6_DECODER"
+	default "1"
 config MLP_DECODER
-	bool "MLP_DECODER"
-	default y
+	int "MLP_DECODER"
+	default "1"
 config MP1_DECODER
-	bool "MP1_DECODER"
-	default y
+	int "MP1_DECODER"
+	default "1"
 config MP2_DECODER
-	bool "MP2_DECODER"
-	default y
+	int "MP2_DECODER"
+	default "1"
 config MP3_DECODER
-	bool "MP3_DECODER"
-	default y
+	int "MP3_DECODER"
+	default "1"
 config MP3ADU_DECODER
-	bool "MP3ADU_DECODER"
-	default y
+	int "MP3ADU_DECODER"
+	default "1"
 config MP3ON4_DECODER
-	bool "MP3ON4_DECODER"
-	default y
+	int "MP3ON4_DECODER"
+	default "1"
 config MPC7_DECODER
-	bool "MPC7_DECODER"
-	default y
+	int "MPC7_DECODER"
+	default "1"
 config MPC8_DECODER
-	bool "MPC8_DECODER"
-	default y
+	int "MPC8_DECODER"
+	default "1"
 config NELLYMOSER_DECODER
-	bool "NELLYMOSER_DECODER"
-	default y
+	int "NELLYMOSER_DECODER"
+	default "1"
 config QCELP_DECODER
-	bool "QCELP_DECODER"
-	default y
+	int "QCELP_DECODER"
+	default "1"
 config QDM2_DECODER
-	bool "QDM2_DECODER"
-	default y
+	int "QDM2_DECODER"
+	default "1"
 config RA_144_DECODER
-	bool "RA_144_DECODER"
-	default y
+	int "RA_144_DECODER"
+	default "1"
 config RA_288_DECODER
-	bool "RA_288_DECODER"
-	default y
+	int "RA_288_DECODER"
+	default "1"
 config SHORTEN_DECODER
-	bool "SHORTEN_DECODER"
-	default y
+	int "SHORTEN_DECODER"
+	default "1"
 config SMACKAUD_DECODER
-	bool "SMACKAUD_DECODER"
-	default y
+	int "SMACKAUD_DECODER"
+	default "1"
 config SONIC_DECODER
-	bool "SONIC_DECODER"
-	default y
+	int "SONIC_DECODER"
+	default "1"
 config TRUEHD_DECODER
-	bool "TRUEHD_DECODER"
-	default y
+	int "TRUEHD_DECODER"
+	default "1"
 config TRUESPEECH_DECODER
-	bool "TRUESPEECH_DECODER"
-	default y
+	int "TRUESPEECH_DECODER"
+	default "1"
 config TTA_DECODER
-	bool "TTA_DECODER"
-	default y
+	int "TTA_DECODER"
+	default "1"
 config TWINVQ_DECODER
-	bool "TWINVQ_DECODER"
-	default y
+	int "TWINVQ_DECODER"
+	default "1"
 config VMDAUDIO_DECODER
-	bool "VMDAUDIO_DECODER"
-	default y
+	int "VMDAUDIO_DECODER"
+	default "1"
 config VORBIS_DECODER
-	bool "VORBIS_DECODER"
-	default y
+	int "VORBIS_DECODER"
+	default "1"
 config WAVPACK_DECODER
-	bool "WAVPACK_DECODER"
-	default y
+	int "WAVPACK_DECODER"
+	default "1"
 config WMAPRO_DECODER
-	bool "WMAPRO_DECODER"
-	default y
+	int "WMAPRO_DECODER"
+	default "1"
 config WMAV1_DECODER
-	bool "WMAV1_DECODER"
-	default y
+	int "WMAV1_DECODER"
+	default "1"
 config WMAV2_DECODER
-	bool "WMAV2_DECODER"
-	default y
+	int "WMAV2_DECODER"
+	default "1"
 config WS_SND1_DECODER
-	bool "WS_SND1_DECODER"
-	default y
+	int "WS_SND1_DECODER"
+	default "1"
 config PCM_ALAW_DECODER
-	bool "PCM_ALAW_DECODER"
-	default y
+	int "PCM_ALAW_DECODER"
+	default "1"
 config PCM_BLURAY_DECODER
-	bool "PCM_BLURAY_DECODER"
-	default y
+	int "PCM_BLURAY_DECODER"
+	default "1"
 config PCM_DVD_DECODER
-	bool "PCM_DVD_DECODER"
-	default y
+	int "PCM_DVD_DECODER"
+	default "1"
 config PCM_F32BE_DECODER
-	bool "PCM_F32BE_DECODER"
-	default y
+	int "PCM_F32BE_DECODER"
+	default "1"
 config PCM_F32LE_DECODER
-	bool "PCM_F32LE_DECODER"
-	default y
+	int "PCM_F32LE_DECODER"
+	default "1"
 config PCM_F64BE_DECODER
-	bool "PCM_F64BE_DECODER"
-	default y
+	int "PCM_F64BE_DECODER"
+	default "1"
 config PCM_F64LE_DECODER
-	bool "PCM_F64LE_DECODER"
-	default y
+	int "PCM_F64LE_DECODER"
+	default "1"
 config PCM_MULAW_DECODER
-	bool "PCM_MULAW_DECODER"
-	default y
+	int "PCM_MULAW_DECODER"
+	default "1"
 config PCM_S8_DECODER
-	bool "PCM_S8_DECODER"
-	default y
+	int "PCM_S8_DECODER"
+	default "1"
 config PCM_S16BE_DECODER
-	bool "PCM_S16BE_DECODER"
-	default y
+	int "PCM_S16BE_DECODER"
+	default "1"
 config PCM_S16LE_DECODER
-	bool "PCM_S16LE_DECODER"
-	default y
+	int "PCM_S16LE_DECODER"
+	default "1"
 config PCM_S16LE_PLANAR_DECODER
-	bool "PCM_S16LE_PLANAR_DECODER"
-	default y
+	int "PCM_S16LE_PLANAR_DECODER"
+	default "1"
 config PCM_S24BE_DECODER
-	bool "PCM_S24BE_DECODER"
-	default y
+	int "PCM_S24BE_DECODER"
+	default "1"
 config PCM_S24DAUD_DECODER
-	bool "PCM_S24DAUD_DECODER"
-	default y
+	int "PCM_S24DAUD_DECODER"
+	default "1"
 config PCM_S24LE_DECODER
-	bool "PCM_S24LE_DECODER"
-	default y
+	int "PCM_S24LE_DECODER"
+	default "1"
 config PCM_S32BE_DECODER
-	bool "PCM_S32BE_DECODER"
-	default y
+	int "PCM_S32BE_DECODER"
+	default "1"
 config PCM_S32LE_DECODER
-	bool "PCM_S32LE_DECODER"
-	default y
+	int "PCM_S32LE_DECODER"
+	default "1"
 config PCM_U8_DECODER
-	bool "PCM_U8_DECODER"
-	default y
+	int "PCM_U8_DECODER"
+	default "1"
 config PCM_U16BE_DECODER
-	bool "PCM_U16BE_DECODER"
-	default y
+	int "PCM_U16BE_DECODER"
+	default "1"
 config PCM_U16LE_DECODER
-	bool "PCM_U16LE_DECODER"
-	default y
+	int "PCM_U16LE_DECODER"
+	default "1"
 config PCM_U24BE_DECODER
-	bool "PCM_U24BE_DECODER"
-	default y
+	int "PCM_U24BE_DECODER"
+	default "1"
 config PCM_U24LE_DECODER
-	bool "PCM_U24LE_DECODER"
-	default y
+	int "PCM_U24LE_DECODER"
+	default "1"
 config PCM_U32BE_DECODER
-	bool "PCM_U32BE_DECODER"
-	default y
+	int "PCM_U32BE_DECODER"
+	default "1"
 config PCM_U32LE_DECODER
-	bool "PCM_U32LE_DECODER"
-	default y
+	int "PCM_U32LE_DECODER"
+	default "1"
 config PCM_ZORK_DECODER
-	bool "PCM_ZORK_DECODER"
-	default y
+	int "PCM_ZORK_DECODER"
+	default "1"
 config INTERPLAY_DPCM_DECODER
-	bool "INTERPLAY_DPCM_DECODER"
-	default y
+	int "INTERPLAY_DPCM_DECODER"
+	default "1"
 config ROQ_DPCM_DECODER
-	bool "ROQ_DPCM_DECODER"
-	default y
+	int "ROQ_DPCM_DECODER"
+	default "1"
 config SOL_DPCM_DECODER
-	bool "SOL_DPCM_DECODER"
-	default y
+	int "SOL_DPCM_DECODER"
+	default "1"
 config XAN_DPCM_DECODER
-	bool "XAN_DPCM_DECODER"
-	default y
+	int "XAN_DPCM_DECODER"
+	default "1"
 config ADPCM_4XM_DECODER
-	bool "ADPCM_4XM_DECODER"
-	default y
+	int "ADPCM_4XM_DECODER"
+	default "1"
 config ADPCM_ADX_DECODER
-	bool "ADPCM_ADX_DECODER"
-	default y
+	int "ADPCM_ADX_DECODER"
+	default "1"
 config ADPCM_CT_DECODER
-	bool "ADPCM_CT_DECODER"
-	default y
+	int "ADPCM_CT_DECODER"
+	default "1"
 config ADPCM_EA_DECODER
-	bool "ADPCM_EA_DECODER"
-	default y
+	int "ADPCM_EA_DECODER"
+	default "1"
 config ADPCM_EA_MAXIS_XA_DECODER
-	bool "ADPCM_EA_MAXIS_XA_DECODER"
-	default y
+	int "ADPCM_EA_MAXIS_XA_DECODER"
+	default "1"
 config ADPCM_EA_R1_DECODER
-	bool "ADPCM_EA_R1_DECODER"
-	default y
+	int "ADPCM_EA_R1_DECODER"
+	default "1"
 config ADPCM_EA_R2_DECODER
-	bool "ADPCM_EA_R2_DECODER"
-	default y
+	int "ADPCM_EA_R2_DECODER"
+	default "1"
 config ADPCM_EA_R3_DECODER
-	bool "ADPCM_EA_R3_DECODER"
-	default y
+	int "ADPCM_EA_R3_DECODER"
+	default "1"
 config ADPCM_EA_XAS_DECODER
-	bool "ADPCM_EA_XAS_DECODER"
-	default y
+	int "ADPCM_EA_XAS_DECODER"
+	default "1"
 config ADPCM_G726_DECODER
-	bool "ADPCM_G726_DECODER"
-	default y
+	int "ADPCM_G726_DECODER"
+	default "1"
 config ADPCM_IMA_AMV_DECODER
-	bool "ADPCM_IMA_AMV_DECODER"
-	default y
+	int "ADPCM_IMA_AMV_DECODER"
+	default "1"
 config ADPCM_IMA_DK3_DECODER
-	bool "ADPCM_IMA_DK3_DECODER"
-	default y
+	int "ADPCM_IMA_DK3_DECODER"
+	default "1"
 config ADPCM_IMA_DK4_DECODER
-	bool "ADPCM_IMA_DK4_DECODER"
-	default y
+	int "ADPCM_IMA_DK4_DECODER"
+	default "1"
 config ADPCM_IMA_EA_EACS_DECODER
-	bool "ADPCM_IMA_EA_EACS_DECODER"
-	default y
+	int "ADPCM_IMA_EA_EACS_DECODER"
+	default "1"
 config ADPCM_IMA_EA_SEAD_DECODER
-	bool "ADPCM_IMA_EA_SEAD_DECODER"
-	default y
+	int "ADPCM_IMA_EA_SEAD_DECODER"
+	default "1"
 config ADPCM_IMA_ISS_DECODER
-	bool "ADPCM_IMA_ISS_DECODER"
-	default y
+	int "ADPCM_IMA_ISS_DECODER"
+	default "1"
 config ADPCM_IMA_QT_DECODER
-	bool "ADPCM_IMA_QT_DECODER"
-	default y
+	int "ADPCM_IMA_QT_DECODER"
+	default "1"
 config ADPCM_IMA_SMJPEG_DECODER
-	bool "ADPCM_IMA_SMJPEG_DECODER"
-	default y
+	int "ADPCM_IMA_SMJPEG_DECODER"
+	default "1"
 config ADPCM_IMA_WAV_DECODER
-	bool "ADPCM_IMA_WAV_DECODER"
-	default y
+	int "ADPCM_IMA_WAV_DECODER"
+	default "1"
 config ADPCM_IMA_WS_DECODER
-	bool "ADPCM_IMA_WS_DECODER"
-	default y
+	int "ADPCM_IMA_WS_DECODER"
+	default "1"
 config ADPCM_MS_DECODER
-	bool "ADPCM_MS_DECODER"
-	default y
+	int "ADPCM_MS_DECODER"
+	default "1"
 config ADPCM_SBPRO_2_DECODER
-	bool "ADPCM_SBPRO_2_DECODER"
-	default y
+	int "ADPCM_SBPRO_2_DECODER"
+	default "1"
 config ADPCM_SBPRO_3_DECODER
-	bool "ADPCM_SBPRO_3_DECODER"
-	default y
+	int "ADPCM_SBPRO_3_DECODER"
+	default "1"
 config ADPCM_SBPRO_4_DECODER
-	bool "ADPCM_SBPRO_4_DECODER"
-	default y
+	int "ADPCM_SBPRO_4_DECODER"
+	default "1"
 config ADPCM_SWF_DECODER
-	bool "ADPCM_SWF_DECODER"
-	default y
+	int "ADPCM_SWF_DECODER"
+	default "1"
 config ADPCM_THP_DECODER
-	bool "ADPCM_THP_DECODER"
-	default y
+	int "ADPCM_THP_DECODER"
+	default "1"
 config ADPCM_XA_DECODER
-	bool "ADPCM_XA_DECODER"
-	default y
+	int "ADPCM_XA_DECODER"
+	default "1"
 config ADPCM_YAMAHA_DECODER
-	bool "ADPCM_YAMAHA_DECODER"
-	default y
+	int "ADPCM_YAMAHA_DECODER"
+	default "1"
 config DVBSUB_DECODER
-	bool "DVBSUB_DECODER"
-	default y
+	int "DVBSUB_DECODER"
+	default "1"
 config DVDSUB_DECODER
-	bool "DVDSUB_DECODER"
-	default y
+	int "DVDSUB_DECODER"
+	default "1"
 config PGSSUB_DECODER
-	bool "PGSSUB_DECODER"
-	default y
+	int "PGSSUB_DECODER"
+	default "1"
 config XSUB_DECODER
-	bool "XSUB_DECODER"
-	default y
+	int "XSUB_DECODER"
+	default "1"
 config LIBDIRAC_DECODER
-	bool "LIBDIRAC_DECODER"
-	default n
+	int "LIBDIRAC_DECODER"
+	default "0"
 config LIBSCHROEDINGER_DECODER
-	bool "LIBSCHROEDINGER_DECODER"
-	default n
+	int "LIBSCHROEDINGER_DECODER"
+	default "0"
 
 config H264_VDPAU_DECODER
-	bool "H264_VDPAU_DECODER"
-	default n
+	int "H264_VDPAU_DECODER"
+	default "0"
 config MPEG_XVMC_DECODER
-	bool "MPEG_XVMC_DECODER"
-	default n
+	int "MPEG_XVMC_DECODER"
+	default "0"
 config MPEG_VDPAU_DECODER
-	bool "MPEG_VDPAU_DECODER"
-	default n
+	int "MPEG_VDPAU_DECODER"
+	default "0"
 config MPEG1_VDPAU_DECODER
-	bool "MPEG1_VDPAU_DECODER"
-	default n
+	int "MPEG1_VDPAU_DECODER"
+	default "0"
 config MPEG4_VDPAU_DECODER
-	bool "MPEG4_VDPAU_DECODER"
-	default n
+	int "MPEG4_VDPAU_DECODER"
+	default "0"
 config VC1_VDPAU_DECODER
-	bool "VC1_VDPAU_DECODER"
-	default n
+	int "VC1_VDPAU_DECODER"
+	default "0"
 config WMV3_VDPAU_DECODER
-	bool "WMV3_VDPAU_DECODER"
-	default n
+	int "WMV3_VDPAU_DECODER"
+	default "0"
 config LIBFAAD_DECODER
-	bool "LIBFAAD_DECODER"
-	default n
+	int "LIBFAAD_DECODER"
+	default "0"
 config LIBGSM_DECODER
-	bool "LIBGSM_DECODER"
-	default n
+	int "LIBGSM_DECODER"
+	default "0"
 config LIBGSM_MS_DECODER
-	bool "LIBGSM_MS_DECODER"
-	default n
+	int "LIBGSM_MS_DECODER"
+	default "0"
 config LIBOPENCORE_AMRNB_DECODER
-	bool "LIBOPENCORE_AMRNB_DECODER"
-	default n
+	int "LIBOPENCORE_AMRNB_DECODER"
+	default "0"
 config LIBOPENCORE_AMRWB_DECODER
-	bool "LIBOPENCORE_AMRWB_DECODER"
-	default n
+	int "LIBOPENCORE_AMRWB_DECODER"
+	default "0"
 config LIBOPENJPEG_DECODER
-	bool "LIBOPENJPEG_DECODER"
-	default n
+	int "LIBOPENJPEG_DECODER"
+	default "0"
 config LIBSPEEX_DECODER
-	bool "LIBSPEEX_DECODER"
-	default n
+	int "LIBSPEEX_DECODER"
+	default "0"
 config ALS_DECODER
-	bool "ALS_DECODER"
-	default n
+	int "ALS_DECODER"
+	default "0"
 config CDGRAPHICS_DECODER
-	bool "CDGRAPHICS_DECODER"
-	default n
+	int "CDGRAPHICS_DECODER"
+	default "0"
 config R210_DECODER
-	bool "R210_DECODER"
-	default n
+	int "R210_DECODER"
+	default "0"
 config AURA_DECODER
-	bool "AURA_DECODER"
-	default n
+	int "AURA_DECODER"
+	default "0"
 config AURA2_DECODER
-	bool "AURA2_DECODER"
-	default n
+	int "AURA2_DECODER"
+	default "0"
 config ANM_DECODER
-	bool "ANM_DECODER"
-	default n
+	int "ANM_DECODER"
+	default "0"
 config SIPR_DECODER
-	bool "SIPR_DECODER"
-	default n
+	int "SIPR_DECODER"
+	default "0"
