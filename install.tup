@@ -1,3 +1,3 @@
 ifeq (@(MPLAYER),y)
-: foreach $(TUP_CWD)/mplayer |> !cp |> %b
+: foreach $(TUP_CWD)/mplayer |> !cp |> %b | $(GITTUP_ROOT)/<initrd>
 endif
